@@ -1,0 +1,1986 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>QuantSignal Pro 11.0 — Live WebSocket Tick Stream & Keyless News Engine</title>
+  <style>
+    :root {
+      --bg-main: #03060c;
+      --bg-card: #0a101d;
+      --bg-panel: #111a2e;
+      --border: #1e2d4d;
+      --text-main: #f8fafc;
+      --text-muted: #8b9bb4;
+      --green: #00e676;
+      --red: #ff3d57;
+      --blue: #2979ff;
+      --cyan: #00e5ff;
+      --magenta: #ff4081;
+      --amber: #ffab00;
+      --purple: #b388ff;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Inter, sans-serif;
+    }
+
+    body {
+      background-color: var(--bg-main);
+      color: var(--text-main);
+      display: flex;
+      justify-content: center;
+      padding: 10px;
+      min-height: 100vh;
+    }
+
+    .app-shell {
+      width: 100%;
+      max-width: 660px;
+      background-color: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 18px;
+      padding: 15px;
+      box-shadow: 0 24px 64px rgba(0, 0, 0, 0.92);
+      display: flex;
+      flex-direction: column;
+      gap: 11px;
+    }
+
+    .top-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 1px solid var(--border);
+      padding-bottom: 10px;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .brand h1 {
+      font-size: 0.96rem;
+      font-weight: 900;
+      letter-spacing: 0.5px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      flex-wrap: wrap;
+    }
+
+    .brand p {
+      font-size: 0.64rem;
+      color: var(--text-muted);
+      margin-top: 2px;
+    }
+
+    .pill {
+      font-size: 0.59rem;
+      padding: 3px 7px;
+      border-radius: 12px;
+      font-weight: 900;
+      background: rgba(0, 230, 118, 0.14);
+      color: var(--green);
+      border: 1px solid var(--green);
+    }
+
+    .pill.ws-pulse {
+      background: rgba(0, 229, 255, 0.15);
+      color: var(--cyan);
+      border-color: var(--cyan);
+    }
+
+    .top-actions {
+      display: flex;
+      gap: 5px;
+      flex-wrap: wrap;
+    }
+
+    .btn-small {
+      background: var(--bg-panel);
+      color: var(--text-main);
+      border: 1px solid var(--border);
+      padding: 5px 8px;
+      border-radius: 8px;
+      font-size: 0.67rem;
+      font-weight: 800;
+      cursor: pointer;
+    }
+
+    .btn-small.active {
+      border-color: var(--green);
+      color: var(--green);
+      background: rgba(0, 230, 118, 0.1);
+    }
+
+    /* Live Telemetry Bar */
+    .audit-bar {
+      background: #060a15;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 7px 10px;
+      font-size: 0.66rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 6px;
+      font-variant-numeric: tabular-nums;
+    }
+
+    /* Keyless Live News & SAST Macro Shield */
+    .news-panel {
+      background: linear-gradient(135deg, #10192e, #0a1020);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 9px 11px;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .news-panel.veto-active {
+      border-color: var(--red);
+      background: rgba(255, 61, 87, 0.12);
+    }
+
+    .news-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 0.71rem;
+      font-weight: 800;
+      flex-wrap: wrap;
+      gap: 4px;
+    }
+
+    .news-headlines {
+      font-size: 0.66rem;
+      color: var(--text-muted);
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      max-height: 68px;
+      overflow-y: auto;
+    }
+
+    .news-item {
+      display: flex;
+      justify-content: space-between;
+      gap: 8px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+      padding-bottom: 3px;
+    }
+
+    .news-item a {
+      color: var(--text-main);
+      text-decoration: none;
+      font-weight: 600;
+    }
+
+    .news-item a:hover {
+      color: var(--cyan);
+    }
+
+    /* Circuit Breaker & Risk Guard Strip */
+    .circuit-strip {
+      background: linear-gradient(135deg, #121b31, #0c1222);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 9px 11px;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .cb-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 0.7rem;
+      font-weight: 800;
+      flex-wrap: wrap;
+      gap: 4px;
+    }
+
+    .cb-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 6px;
+    }
+
+    .cb-box {
+      background: rgba(0, 0, 0, 0.35);
+      border: 1px solid var(--border);
+      border-radius: 7px;
+      padding: 5px;
+      text-align: center;
+    }
+
+    .cb-box span {
+      font-size: 0.55rem;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      display: block;
+    }
+
+    .cb-box strong {
+      font-size: 0.72rem;
+      margin-top: 2px;
+      display: block;
+      font-variant-numeric: tabular-nums;
+    }
+
+    /* SAST Session Strip */
+    .sast-banner {
+      background: var(--bg-panel);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 8px 11px;
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
+    }
+
+    .sast-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 0.71rem;
+      font-weight: 800;
+      flex-wrap: wrap;
+      gap: 4px;
+    }
+
+    .sast-sessions {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 5px;
+    }
+
+    .s-badge {
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid var(--border);
+      border-radius: 7px;
+      padding: 4px;
+      text-align: center;
+      font-size: 0.58rem;
+      font-weight: 700;
+    }
+
+    .s-badge.open {
+      border-color: var(--green);
+      color: var(--green);
+      background: rgba(0, 230, 118, 0.09);
+    }
+
+    .s-badge.closed {
+      color: var(--text-muted);
+      opacity: 0.6;
+    }
+
+    /* 7-Pair Matrix */
+    .matrix-section {
+      background: var(--bg-panel);
+      border: 1px solid var(--border);
+      border-radius: 13px;
+      padding: 9px;
+    }
+
+    .matrix-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 0.68rem;
+      font-weight: 800;
+      margin-bottom: 6px;
+      color: var(--text-muted);
+      text-transform: uppercase;
+    }
+
+    .matrix-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
+      gap: 6px;
+    }
+
+    .matrix-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 9px;
+      padding: 7px;
+      cursor: pointer;
+      transition: border-color 0.15s;
+    }
+
+    .matrix-card.selected {
+      border: 1.5px solid var(--blue);
+      background: rgba(41, 121, 255, 0.12);
+    }
+
+    .matrix-card.best-pick {
+      border: 1.5px solid var(--amber);
+      box-shadow: 0 0 10px rgba(255, 171, 0, 0.2);
+    }
+
+    .mc-top {
+      display: flex;
+      justify-content: space-between;
+      font-size: 0.71rem;
+      font-weight: 900;
+      margin-bottom: 3px;
+    }
+
+    .mc-psar {
+      font-size: 0.58rem;
+      font-weight: 700;
+      display: block;
+      margin-bottom: 3px;
+    }
+
+    .mc-bottom {
+      display: flex;
+      justify-content: space-between;
+      font-size: 0.62rem;
+      font-variant-numeric: tabular-nums;
+    }
+
+    .controls-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 8px;
+    }
+
+    .field {
+      display: flex;
+      flex-direction: column;
+      gap: 3px;
+    }
+
+    .field label {
+      font-size: 0.6rem;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      font-weight: 700;
+    }
+
+    select, input {
+      background: var(--bg-panel);
+      color: var(--text-main);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 7px 9px;
+      font-size: 0.8rem;
+      font-weight: 700;
+      outline: none;
+    }
+
+    /* Candle Countdown Strip */
+    .timer-strip {
+      background: var(--bg-panel);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 7px 11px;
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
+    }
+
+    .timer-row {
+      display: flex;
+      justify-content: space-between;
+      font-size: 0.7rem;
+      font-weight: 700;
+      flex-wrap: wrap;
+      gap: 4px;
+    }
+
+    .progress-track {
+      width: 100%;
+      height: 5px;
+      background: #070b14;
+      border-radius: 4px;
+      overflow: hidden;
+    }
+
+    .progress-fill {
+      height: 100%;
+      background: linear-gradient(90deg, var(--cyan), var(--green));
+      width: 0%;
+      transition: width 0.3s linear;
+    }
+
+    /* Non-Repainting Signal Box */
+    .signal-hero {
+      background: var(--bg-panel);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 12px;
+      text-align: center;
+    }
+
+    .regime-badges {
+      display: flex;
+      justify-content: space-between;
+      gap: 5px;
+      margin-bottom: 8px;
+      flex-wrap: wrap;
+    }
+
+    .badge {
+      font-size: 0.61rem;
+      font-weight: 800;
+      padding: 4px 8px;
+      border-radius: 16px;
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid var(--border);
+    }
+
+    .signal-box {
+      padding: 11px 10px;
+      border-radius: 11px;
+      background: rgba(4, 7, 14, 0.84);
+      border: 1px dashed var(--border);
+      margin-bottom: 8px;
+    }
+
+    .sig-main {
+      font-size: 1.25rem;
+      font-weight: 900;
+      margin-bottom: 4px;
+    }
+
+    .c-buy { color: var(--green); }
+    .c-sell { color: var(--red); }
+    .c-wait { color: var(--amber); }
+
+    .sig-sub {
+      font-size: 0.71rem;
+      color: var(--text-muted);
+      line-height: 1.35;
+    }
+
+    .sniper-bar {
+      background: rgba(0, 229, 255, 0.07);
+      border: 1px solid rgba(0, 229, 255, 0.3);
+      border-radius: 9px;
+      padding: 7px 10px;
+      margin-bottom: 8px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 0.69rem;
+      font-weight: 700;
+      flex-wrap: wrap;
+      gap: 6px;
+    }
+
+    .metrics-row {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 6px;
+    }
+
+    .m-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 5px 4px;
+      text-align: center;
+    }
+
+    .m-card span {
+      font-size: 0.54rem;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      display: block;
+    }
+
+    .m-card strong {
+      font-size: 0.72rem;
+      margin-top: 2px;
+      display: block;
+      font-variant-numeric: tabular-nums;
+    }
+
+    .chart-box {
+      background: var(--bg-panel);
+      border: 1px solid var(--border);
+      border-radius: 13px;
+      padding: 10px;
+    }
+
+    .chart-header {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 6px;
+      font-size: 0.68rem;
+    }
+
+    canvas {
+      width: 100%;
+      height: 158px;
+      background: #050811;
+      border-radius: 8px;
+      border: 1px solid var(--border);
+      display: block;
+    }
+
+    .kelly-card {
+      background: rgba(41, 121, 255, 0.08);
+      border: 1px solid rgba(41, 121, 255, 0.35);
+      border-radius: 11px;
+      padding: 9px 11px;
+      font-size: 0.7rem;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .kelly-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .ledger-card {
+      background: var(--bg-panel);
+      border: 1px solid var(--border);
+      border-radius: 13px;
+      padding: 10px;
+    }
+
+    .ledger-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 6px;
+      font-size: 0.71rem;
+      font-weight: 800;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.66rem;
+    }
+
+    th, td {
+      padding: 5px 4px;
+      text-align: left;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+      font-variant-numeric: tabular-nums;
+    }
+
+    th {
+      color: var(--text-muted);
+      text-transform: uppercase;
+      font-size: 0.58rem;
+    }
+
+    .btn-grade {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      color: var(--text-main);
+      padding: 2px 5px;
+      border-radius: 5px;
+      font-size: 0.59rem;
+      cursor: pointer;
+      font-weight: 800;
+      margin-right: 2px;
+    }
+
+    .btn-row {
+      display: grid;
+      grid-template-columns: 1.5fr 1fr 1fr 1fr;
+      gap: 6px;
+    }
+
+    .btn-scan {
+      background: linear-gradient(135deg, #00e676, #00b248);
+      color: #031409;
+      border: none;
+      border-radius: 10px;
+      padding: 10px;
+      font-size: 0.74rem;
+      font-weight: 900;
+      cursor: pointer;
+    }
+
+    .btn-news {
+      background: rgba(0, 229, 255, 0.12);
+      color: var(--cyan);
+      border: 1px solid var(--cyan);
+      border-radius: 10px;
+      padding: 10px;
+      font-size: 0.71rem;
+      font-weight: 800;
+      cursor: pointer;
+    }
+
+    .btn-voice-test {
+      background: rgba(179, 136, 255, 0.14);
+      color: var(--purple);
+      border: 1px solid var(--purple);
+      border-radius: 10px;
+      padding: 10px;
+      font-size: 0.71rem;
+      font-weight: 800;
+      cursor: pointer;
+    }
+
+    .btn-export {
+      background: var(--bg-panel);
+      color: var(--text-main);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 10px;
+      font-size: 0.71rem;
+      font-weight: 800;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+
+<div class="app-shell">
+  <div class="top-bar">
+    <div class="brand">
+      <h1>
+        🛡️ QUANTSIGNAL PRO 11.0
+        <span class="pill" id="integrityPill">● ZERO-API-KEY LIVE</span>
+        <span class="pill ws-pulse" id="wsStatusPill">⚡ WS STREAMING</span>
+      </h1>
+      <p>Real-Time WebSocket Candle Moves • Keyless News Shield • Non-Repainting Bar [-2]</p>
+    </div>
+    <div class="top-actions">
+      <button class="btn-small active" id="autoPickBtn">🏆 AUTO-PICK</button>
+      <button class="btn-small active" id="voiceBtn">🗣️ VOICE</button>
+      <button class="btn-small active" id="soundBtn">🔊 CHIME</button>
+      <button class="btn-small" id="resetVaultBtn">🗑️ RESET</button>
+    </div>
+  </div>
+
+  <!-- Live Packet Telemetry Bar -->
+  <div class="audit-bar">
+    <span id="packetLatency">📡 REST Latency: -- ms</span>
+    <span id="wsTickCounter" style="color: var(--cyan);">⚡ Live WebSocket Ticks: 0</span>
+    <span id="crossFeedVerify" style="color: var(--green);">🔍 Dual-Exchange Audit: Verifying...</span>
+  </div>
+
+  <!-- Keyless Live Financial News & SAST High-Impact Event Shield -->
+  <div class="news-panel" id="newsPanel">
+    <div class="news-top">
+      <span id="newsStatusTitle">📰 Live Market News & Macro Volatility Shield (Keyless Feed)</span>
+      <span id="newsSentimentBadge" style="color: var(--cyan);">Scanning live headlines...</span>
+    </div>
+    <div class="news-headlines" id="newsHeadlinesList">
+      <div>Connecting to public financial news wire (Zero API key required)...</div>
+    </div>
+  </div>
+
+  <!-- Automated Daily Circuit Breaker & USD Exposure Shield -->
+  <div class="circuit-strip" id="circuitStrip">
+    <div class="cb-top">
+      <span id="cbStatusText" style="color: var(--green);">🛡️ Risk Guard: ACTIVE (Target +10% | Stop -6% or 3L Streak)</span>
+      <span id="usdShieldTag" style="color: var(--cyan);">USD Shield: Clear</span>
+    </div>
+    <div class="cb-grid">
+      <div class="cb-box">
+        <span>Session Net P&L</span>
+        <strong id="cbNetPnl" style="color: var(--green);">$0.00 (0.0%)</strong>
+      </div>
+      <div class="cb-box">
+        <span>Loss Streak</span>
+        <strong id="cbLossStreak">0 / 3 Max</strong>
+      </div>
+      <div class="cb-box">
+        <span>USD Bias Meter</span>
+        <strong id="cbUsdMeter">NEUTRAL</strong>
+      </div>
+      <div class="cb-box">
+        <span>Payout Guard</span>
+        <strong id="cbPayoutGuard" style="color: var(--green);">+92% OK</strong>
+      </div>
+    </div>
+  </div>
+
+  <!-- SAST Clock & Session Banner -->
+  <div class="sast-banner">
+    <div class="sast-top">
+      <span id="sastClockText">🇿🇦 SAST Time: --:--:-- (UTC+2)</span>
+      <span id="sastStatusTag" style="color: var(--green);">Checking SAST session...</span>
+    </div>
+    <div class="sast-sessions">
+      <div class="s-badge" id="sesSydney">🇦🇺 Sydney<br><small>00:00–09:00</small></div>
+      <div class="s-badge" id="sesTokyo">🇯🇵 Tokyo<br><small>02:00–11:00</small></div>
+      <div class="s-badge" id="sesLondon">🇬🇧 London<br><small>10:00–19:00</small></div>
+      <div class="s-badge" id="sesNewYork">🇺🇸 New York<br><small>15:00–00:00</small></div>
+    </div>
+  </div>
+
+  <!-- 7-Pair Live Matrix -->
+  <div class="matrix-section">
+    <div class="matrix-header">
+      <span>🌐 7-Pair Live Matrix (Prices Tick Live via WebSocket)</span>
+      <span id="matrixStatus" style="color: var(--cyan);">Fetching live packets...</span>
+    </div>
+    <div class="matrix-grid" id="matrixGrid"></div>
+  </div>
+
+  <div class="controls-grid">
+    <div class="field">
+      <label>Focused Real Market Asset</label>
+      <select id="pairSelect">
+        <option value="EURUSD">EUR/USD (Interbank FX)</option>
+        <option value="GBPUSD">GBP/USD (Interbank FX)</option>
+        <option value="USDJPY">USD/JPY (Interbank FX)</option>
+        <option value="AUDUSD">AUD/USD (Interbank FX)</option>
+        <option value="USDCAD">USD/CAD (Interbank FX)</option>
+        <option value="XBTUSD">BTC/USD (Spot Crypto)</option>
+        <option value="ETHUSD">ETH/USD (Spot Crypto)</option>
+      </select>
+    </div>
+
+    <div class="field">
+      <label>Candle Timeframe</label>
+      <select id="tfSelect">
+        <option value="1">M1 (1 Min) + M5 Macro</option>
+        <option value="5" selected>M5 (5 Min) + M15 Macro</option>
+        <option value="15">M15 (15 Min) + H1 Macro</option>
+      </select>
+    </div>
+
+    <div class="field">
+      <label>Account Bankroll ($ USD)</label>
+      <input type="number" id="bankrollInput" value="1000" min="50" step="50" />
+    </div>
+
+    <div class="field">
+      <label>Pocket Option Payout (% — Min 80%)</label>
+      <input type="number" id="payoutInput" value="92" min="50" max="98" />
+    </div>
+  </div>
+
+  <!-- Candle Countdown Strip -->
+  <div class="timer-strip">
+    <div class="timer-row">
+      <span id="countdownText" style="color: var(--cyan);">Next Candle Scan: --s</span>
+      <span id="entryWindowTag" style="color: var(--green);">🎯 Sniper Window: Ready</span>
+    </div>
+    <div class="progress-track">
+      <div class="progress-fill" id="timerBar"></div>
+    </div>
+  </div>
+
+  <!-- Non-Repainting Signal Output -->
+  <div class="signal-hero">
+    <div class="regime-badges">
+      <span class="badge" id="mtfBadge">Macro: --</span>
+      <span class="badge" id="psarBadge">Locked Bar PSAR: --</span>
+      <span class="badge" id="squeezeBadge">Volatility: --</span>
+    </div>
+
+    <div class="signal-box">
+      <div class="sig-main c-wait" id="sigTitle">CONNECTING TO KRAKEN...</div>
+      <div class="sig-sub" id="sigDetails">Waiting for verified HTTP & WebSocket packets from exchange...</div>
+    </div>
+
+    <div class="sniper-bar">
+      <span id="sniperZoneText">🎯 Live Sniper Entry Ceiling/Floor: --</span>
+      <strong id="sniperStatusBadge" style="color: var(--cyan);">STANDBY</strong>
+    </div>
+
+    <div class="metrics-row">
+      <div class="m-card">
+        <span>Closed Bar [-2]</span>
+        <strong id="mClosed">--</strong>
+      </div>
+      <div class="m-card">
+        <span>⚡ Live Tick [-1]</span>
+        <strong id="mLive" style="color: var(--cyan);">--</strong>
+      </div>
+      <div class="m-card">
+        <span>RSI (Locked)</span>
+        <strong id="mRsi">--</strong>
+      </div>
+      <div class="m-card">
+        <span>ADX (14)</span>
+        <strong id="mAdx">--</strong>
+      </div>
+      <div class="m-card">
+        <span>ATR (14)</span>
+        <strong id="mAtr">--</strong>
+      </div>
+    </div>
+  </div>
+
+  <div class="chart-box">
+    <div class="chart-header">
+      <span><strong>Live Streaming Candles + Parabolic SAR</strong> (<span style="color:var(--cyan);">● Bull</span> / <span style="color:var(--magenta);">● Bear</span>)</span>
+      <span id="btWinRate" style="color: var(--green); font-weight: 800;">Point-in-Time 50-Bar WR: --%</span>
+    </div>
+    <canvas id="chartCanvas" width="560" height="158"></canvas>
+  </div>
+
+  <!-- Quarter-Kelly & Expected Value Box -->
+  <div class="kelly-card">
+    <div class="kelly-row">
+      <span>Required Breakeven Win Rate:</span>
+      <strong id="kBreakeven">52.08%</strong>
+    </div>
+    <div class="kelly-row">
+      <span>Quarter-Kelly Safe Stake ($ USD):</span>
+      <strong id="kStake" style="color: var(--green); font-size: 0.86rem;">$0.00</strong>
+    </div>
+    <div class="kelly-row">
+      <span>Expected Value ($EV) per Filtered Trade:</span>
+      <strong id="kEv">$0.00</strong>
+    </div>
+  </div>
+
+  <!-- True-Expiration Trade Ledger -->
+  <div class="ledger-card">
+    <div class="ledger-top">
+      <span>🏆 True-Expiration Ledger (Grades on Real WebSocket Price + PO Override)</span>
+      <span id="liveScoreText" style="color: var(--green);">0W - 0L ($0.00)</span>
+    </div>
+    <table>
+      <thead>
+        <tr>
+          <th>SAST</th>
+          <th>Pair</th>
+          <th>Signal</th>
+          <th>Entry → Exit</th>
+          <th>Verify / Result</th>
+        </tr>
+      </thead>
+      <tbody id="ledgerBody">
+        <tr>
+          <td colspan="5" style="text-align: center; color: var(--text-muted);">
+            Only non-repainting signals (Score ≥ 3) lock at candle open and grade at true expiration.
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="btn-row">
+    <button class="btn-scan" id="forceScanBtn">⚡ SCAN 7 PAIRS</button>
+    <button class="btn-news" id="refreshNewsBtn">📰 REFRESH NEWS</button>
+    <button class="btn-voice-test" id="testVoiceBtn">🗣️ TEST VOICE</button>
+    <button class="btn-export" id="exportCsvBtn">📥 CSV</button>
+  </div>
+</div>
+
+<script>
+  const PAIRS = [
+    { id: 'EURUSD', wsName: 'EUR/USD', label: 'EUR/USD', coinbase: 'EUR-USD', usdRole: 'QUOTE' },
+    { id: 'GBPUSD', wsName: 'GBP/USD', label: 'GBP/USD', coinbase: 'GBP-USD', usdRole: 'QUOTE' },
+    { id: 'USDJPY', wsName: 'USD/JPY', label: 'USD/JPY', coinbase: null,      usdRole: 'BASE'  },
+    { id: 'AUDUSD', wsName: 'AUD/USD', label: 'AUD/USD', coinbase: 'AUD-USD', usdRole: 'QUOTE' },
+    { id: 'USDCAD', wsName: 'USD/CAD', label: 'USD/CAD', coinbase: null,      usdRole: 'BASE'  },
+    { id: 'XBTUSD', wsName: 'XBT/USD', label: 'BTC/USD', coinbase: 'BTC-USD', usdRole: 'CRYPTO'},
+    { id: 'ETHUSD', wsName: 'ETH/USD', label: 'ETH/USD', coinbase: 'ETH-USD', usdRole: 'CRYPTO'}
+  ];
+
+  const VAULT_KEY = 'quantsignal_pro_v11_ws_vault';
+  let audioEnabled = true;
+  let voiceEnabled = true;
+  let autoPickBest = true;
+  let audioCtx = null;
+  let pendingTrade = null;
+  let gradedHistory = [];
+  let matrixCache = {};
+  let lastTradedCandleByPair = {};
+  let circuitLockedReason = null;
+  let newsVetoActive = false;
+  let newsSentimentScore = 0; // +1 USD Bull, -1 USD Bear, 0 Neutral
+  let wsInstance = null;
+  let wsTickCount = 0;
+
+  function loadVault() {
+    try {
+      const raw = localStorage.getItem(VAULT_KEY);
+      if (raw) {
+        const parsed = JSON.parse(raw);
+        gradedHistory = Array.isArray(parsed.gradedHistory) ? parsed.gradedHistory : [];
+        if (parsed.bankroll) document.getElementById('bankrollInput').value = parsed.bankroll;
+      }
+    } catch (e) {}
+  }
+
+  function saveVault() {
+    try {
+      localStorage.setItem(VAULT_KEY, JSON.stringify({
+        gradedHistory,
+        bankroll: parseFloat(document.getElementById('bankrollInput').value) || 1000
+      }));
+    } catch (e) {}
+  }
+
+  function speakAlert(text) {
+    if (!voiceEnabled || !('speechSynthesis' in window)) return;
+    try {
+      window.speechSynthesis.cancel();
+      const u = new SpeechSynthesisUtterance(text);
+      u.rate = 1.03;
+      window.speechSynthesis.speak(u);
+    } catch (e) {}
+  }
+
+  function playAlertTone(type) {
+    if (!audioEnabled) return;
+    try {
+      if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+      const now = audioCtx.currentTime;
+      const osc = audioCtx.createOscillator();
+      const gain = audioCtx.createGain();
+      osc.connect(gain);
+      gain.connect(audioCtx.destination);
+
+      if (type === 'BUY') {
+        osc.frequency.setValueAtTime(523.25, now);
+        osc.frequency.setValueAtTime(659.25, now + 0.11);
+        osc.frequency.setValueAtTime(783.99, now + 0.22);
+      } else if (type === 'SELL') {
+        osc.frequency.setValueAtTime(783.99, now);
+        osc.frequency.setValueAtTime(659.25, now + 0.11);
+        osc.frequency.setValueAtTime(523.25, now + 0.22);
+      }
+      gain.gain.setValueAtTime(0.12, now);
+      gain.gain.exponentialRampToValueAtTime(0.001, now + 0.38);
+      osc.start(now);
+      osc.stop(now + 0.38);
+    } catch (e) {}
+  }
+
+  document.getElementById('soundBtn').addEventListener('click', (e) => {
+    audioEnabled = !audioEnabled;
+    e.target.textContent = audioEnabled ? '🔊 CHIME' : '🔇 MUTED';
+    e.target.classList.toggle('active', audioEnabled);
+  });
+
+  document.getElementById('voiceBtn').addEventListener('click', (e) => {
+    voiceEnabled = !voiceEnabled;
+    e.target.textContent = voiceEnabled ? '🗣️ VOICE' : '🔇 VOICE OFF';
+    e.target.classList.toggle('active', voiceEnabled);
+  });
+
+  document.getElementById('autoPickBtn').addEventListener('click', (e) => {
+    autoPickBest = !autoPickBest;
+    e.target.textContent = autoPickBest ? '🏆 AUTO-PICK' : '🏆 MANUAL';
+    e.target.classList.toggle('active', autoPickBest);
+  });
+
+  document.getElementById('resetVaultBtn').addEventListener('click', () => {
+    gradedHistory = [];
+    pendingTrade = null;
+    circuitLockedReason = null;
+    lastTradedCandleByPair = {};
+    saveVault();
+    renderLedgerAndCircuitBreaker();
+  });
+
+  document.getElementById('testVoiceBtn').addEventListener('click', () => {
+    const pairId = document.getElementById('pairSelect').value;
+    const d = matrixCache[pairId];
+    playAlertTone('BUY');
+    if (d) {
+      const stake = evaluateCircuitAndKelly(d.winRate, d.total);
+      const wrText = d.winRate !== null ? `${(d.winRate * 100).toFixed(0)} percent` : 'insufficient sample';
+      speakAlert(`QuantSignal Pro 11 Live WebSocket Active. Focused pair ${d.label.replace('/', ' ')}. Live price ${d.livePrice.toFixed(d.decimals)}. 50 bar win rate ${wrText}. Recommended stake ${stake} dollars.`);
+    } else {
+      speakAlert('QuantSignal Pro 11 WebSocket and Keyless News Engine Active.');
+    }
+  });
+
+  function getSASTTimeParts() {
+    const sastDate = new Date(Date.now() + 2 * 3600000);
+    return {
+      day: sastDate.getUTCDay(),
+      hour: sastDate.getUTCHours(),
+      min: sastDate.getUTCMinutes(),
+      sec: sastDate.getUTCSeconds(),
+      formatted: sastDate.toISOString().split('T')[1].split('.')[0]
+    };
+  }
+
+  function updateSASTClock() {
+    const sast = getSASTTimeParts();
+    document.getElementById('sastClockText').textContent = `🇿🇦 SAST Time: ${sast.formatted} (UTC+2)`;
+
+    const isWeekend = (sast.day === 5 && sast.hour >= 23) || sast.day === 6 || (sast.day === 0 && sast.hour < 23);
+    const isRollover = (sast.hour === 22 && sast.min >= 45) || (sast.hour === 23 && sast.min <= 30);
+    const statusTag = document.getElementById('sastStatusTag');
+
+    if (isWeekend) {
+      statusTag.textContent = '🔴 Forex Weekend Close (Crypto 24/7 Open)';
+      statusTag.style.color = 'var(--amber)';
+    } else if (isRollover) {
+      statusTag.textContent = '⚠️ 23:00 SAST Bank Rollover — Wide Spreads';
+      statusTag.style.color = 'var(--red)';
+    } else if (sast.hour >= 15 && sast.hour < 19) {
+      statusTag.textContent = '🔥 London / NY Overlap Active (Peak Volume)';
+      statusTag.style.color = 'var(--green)';
+    } else {
+      statusTag.textContent = '🟢 Global Market Open';
+      statusTag.style.color = 'var(--cyan)';
+    }
+
+    const setSes = (id, open) => {
+      document.getElementById(id).className = `s-badge ${open ? 'open' : 'closed'}`;
+    };
+    setSes('sesSydney', sast.hour >= 0 && sast.hour < 9 && !isWeekend);
+    setSes('sesTokyo', sast.hour >= 2 && sast.hour < 11 && !isWeekend);
+    setSes('sesLondon', sast.hour >= 10 && sast.hour < 19 && !isWeekend);
+    setSes('sesNewYork', sast.hour >= 15 && sast.hour < 24 && !isWeekend);
+  }
+  setInterval(updateSASTClock, 1000);
+  updateSASTClock();
+
+  // KEYLESS LIVE FINANCIAL NEWS ENGINE (Public RSS2JSON + SAST High-Impact Release Schedule)
+  async function fetchKeylessLiveNews() {
+    const listEl = document.getElementById('newsHeadlinesList');
+    const badgeEl = document.getElementById('newsSentimentBadge');
+    const panelEl = document.getElementById('newsPanel');
+    const sast = getSASTTimeParts();
+
+    // Check SAST High-Impact US / European Macro Release Windows (14:25-14:40, 15:55-16:10, 19:55-20:15 SAST)
+    const totalMins = sast.hour * 60 + sast.min;
+    const isUsDataWindow = (totalMins >= 865 && totalMins <= 880) || // 14:25-14:40 SAST (CPI/PPI/NFP/Jobless Claims)
+                           (totalMins >= 955 && totalMins <= 970) || // 15:55-16:10 SAST (ISM/Consumer Confidence)
+                           (totalMins >= 1195 && totalMins <= 1215); // 19:55-20:15 SAST (FOMC)
+
+    try {
+      const rssUrl = encodeURIComponent('https://www.investing.com/rss/news_1.rss');
+      const res = await fetch(`https://api.rss2json.com/v1/api.json?rss_url=${rssUrl}`).then(r => r.json());
+
+      if (res && Array.isArray(res.items) && res.items.length > 0) {
+        const top3 = res.items.slice(0, 3);
+        let hawkCount = 0, doveCount = 0, shockVeto = false;
+
+        top3.forEach(item => {
+          const t = (item.title || '').toLowerCase();
+          if (t.includes('cpi') || t.includes('nonfarm') || t.includes('fomc') || t.includes('rate decision') || t.includes('emergency')) {
+            if (isUsDataWindow) shockVeto = true;
+          }
+          if (t.includes('surge') || t.includes('hawkish') || t.includes('strong dollar') || t.includes('inflation rises') || t.includes('beats')) hawkCount++;
+          if (t.includes('rate cut') || t.includes('dovish') || t.includes('weak dollar') || t.includes('misses') || t.includes('falls')) doveCount++;
+        });
+
+        newsVetoActive = shockVeto || isUsDataWindow;
+        newsSentimentScore = hawkCount > doveCount ? 1 : (doveCount > hawkCount ? -1 : 0);
+
+        panelEl.classList.toggle('veto-active', newsVetoActive);
+        if (newsVetoActive) {
+          badgeEl.textContent = '🔴 HIGH-IMPACT SAST NEWS WINDOW — VETO ACTIVE';
+          badgeEl.style.color = 'var(--red)';
+        } else {
+          badgeEl.textContent = newsSentimentScore > 0
+            ? '🟢 Live Feed: USD Bullish Bias (+1)'
+            : (newsSentimentScore < 0 ? '🔴 Live Feed: USD Bearish Bias (-1)' : '⚪ Live Feed: Neutral Macro Bias');
+          badgeEl.style.color = 'var(--green)';
+        }
+
+        listEl.innerHTML = top3.map(item => {
+          const pubTime = item.pubDate ? item.pubDate.split(' ')[1]?.slice(0, 5) || 'Live' : 'Live';
+          return `<div class="news-item">
+            <a href="${item.link}" target="_blank" rel="noopener noreferrer">• ${item.title}</a>
+            <span style="color:var(--cyan);white-space:nowrap;">${pubTime} UTC</span>
+          </div>`;
+        }).join('');
+        return;
+      }
+      throw new Error('Fallback to SAST Macro Schedule');
+    } catch (e) {
+      newsVetoActive = isUsDataWindow;
+      panelEl.classList.toggle('veto-active', newsVetoActive);
+      badgeEl.textContent = newsVetoActive
+        ? '🔴 SAST MACRO RELEASE WINDOW — VETO ACTIVE'
+        : '🟢 SAST Macro Schedule Clear (No Active Shock)';
+      badgeEl.style.color = newsVetoActive ? 'var(--red)' : 'var(--cyan)';
+      listEl.innerHTML = `
+        <div class="news-item"><span>• SAST 14:30 Window: US Jobless Claims / PPI / CPI</span><span>Guarded</span></div>
+        <div class="news-item"><span>• SAST 15:00–19:00 Window: London / NY Overlap</span><span style="color:var(--green);">Active Liquidity</span></div>
+        <div class="news-item"><span>• SAST 22:45–23:30 Window: Daily Bank Settlement Rollover</span><span>Auto-Veto</span></div>
+      `;
+    }
+  }
+
+  document.getElementById('refreshNewsBtn').addEventListener('click', fetchKeylessLiveNews);
+
+  // REAL-TIME KRAKEN PUBLIC WEBSOCKET STREAM (Zero API Key — Moves Candle [-1] in Real Time!)
+  function connectLiveWebSocketStream() {
+    const wsPill = document.getElementById('wsStatusPill');
+    try {
+      if (wsInstance) wsInstance.close();
+      wsInstance = new WebSocket('wss://ws.kraken.com');
+
+      wsInstance.onopen = () => {
+        wsPill.textContent = '⚡ WS LIVE TICK STREAM';
+        wsPill.style.color = 'var(--cyan)';
+        wsInstance.send(JSON.stringify({
+          event: 'subscribe',
+          pair: PAIRS.map(p => p.wsName),
+          subscription: { name: 'ticker' }
+        }));
+      };
+
+      wsInstance.onmessage = (event) => {
+        const msg = JSON.parse(event.data);
+        if (!Array.isArray(msg) || msg.length < 4) return;
+        const tickerObj = msg[1];
+        const wsPairName = msg[3];
+        if (!tickerObj || !tickerObj.c) return;
+
+        const liveTickPrice = parseFloat(tickerObj.c[0]);
+        const pairMeta = PAIRS.find(p => p.wsName === wsPairName);
+        if (!pairMeta || !matrixCache[pairMeta.id]) return;
+
+        wsTickCount++;
+        document.getElementById('wsTickCounter').textContent = `⚡ Live WebSocket Ticks: ${wsTickCount}`;
+
+        const d = matrixCache[pairMeta.id];
+        d.livePrice = liveTickPrice;
+
+        // Update Forming Candle [-1] in Real Time
+        const lastCandle = d.candles[d.candles.length - 1];
+        if (lastCandle) {
+          lastCandle.close = liveTickPrice;
+          if (liveTickPrice > lastCandle.high) lastCandle.high = liveTickPrice;
+          if (liveTickPrice < lastCandle.low) lastCandle.low = liveTickPrice;
+        }
+
+        // Update Matrix Card Price in Real Time
+        const cardPriceEl = document.querySelector(`.matrix-card[data-pair="${pairMeta.id}"] .mc-price-val`);
+        if (cardPriceEl) cardPriceEl.textContent = liveTickPrice.toFixed(d.decimals);
+
+        // If this is the currently focused pair, redraw chart and Sniper Zone on every tick!
+        if (document.getElementById('pairSelect').value === pairMeta.id) {
+          document.getElementById('mLive').textContent = liveTickPrice.toFixed(d.decimals);
+          updateLiveSniperBarOnly(d);
+          drawChart(d);
+        }
+      };
+
+      wsInstance.onclose = () => {
+        wsPill.textContent = '⏳ WS RECONNECTING...';
+        setTimeout(connectLiveWebSocketStream, 4000);
+      };
+    } catch (e) {
+      wsPill.textContent = '📡 REST POLLING MODE';
+    }
+  }
+
+  function updateLiveSniperBarOnly(d) {
+    const buyCeiling = d.liveOpen + 0.25 * d.atrClosed;
+    const sellFloor = d.liveOpen - 0.25 * d.atrClosed;
+    const sniperZoneEl = document.getElementById('sniperZoneText');
+    const sniperBadgeEl = document.getElementById('sniperStatusBadge');
+
+    if (d.closedEval.score >= 3) {
+      const chased = d.livePrice > buyCeiling;
+      sniperZoneEl.textContent = `🎯 Max Entry on PO: ≤ ${buyCeiling.toFixed(d.decimals)} (Live: ${d.livePrice.toFixed(d.decimals)})`;
+      sniperBadgeEl.textContent = chased ? '⚠️ PRICE CHASED — WAIT PULLBACK' : '✅ IN SNIPER ZONE';
+      sniperBadgeEl.style.color = chased ? 'var(--amber)' : 'var(--green)';
+    } else if (d.closedEval.score <= -3) {
+      const chased = d.livePrice < sellFloor;
+      sniperZoneEl.textContent = `🎯 Min Entry on PO: ≥ ${sellFloor.toFixed(d.decimals)} (Live: ${d.livePrice.toFixed(d.decimals)})`;
+      sniperBadgeEl.textContent = chased ? '⚠️ PRICE CHASED — WAIT PULLBACK' : '✅ IN SNIPER ZONE';
+      sniperBadgeEl.style.color = chased ? 'var(--amber)' : 'var(--green)';
+    }
+  }
+
+  // Pure Mathematical Indicators
+  function calcEMA(arr, period) {
+    const k = 2 / (period + 1);
+    let res = [arr[0]];
+    for (let i = 1; i < arr.length; i++) res.push(arr[i] * k + res[i - 1] * (1 - k));
+    return res;
+  }
+
+  function calcATR(candles, period = 14) {
+    let tr = [candles[0].high - candles[0].low];
+    for (let i = 1; i < candles.length; i++) {
+      tr.push(Math.max(
+        candles[i].high - candles[i].low,
+        Math.abs(candles[i].high - candles[i - 1].close),
+        Math.abs(candles[i].low - candles[i - 1].close)
+      ));
+    }
+    return calcEMA(tr, period);
+  }
+
+  function calcRSI(closes, period = 14) {
+    let rsi = new Array(closes.length).fill(50);
+    if (closes.length <= period) return rsi;
+    let g = 0, l = 0;
+    for (let i = 1; i <= period; i++) {
+      const d = closes[i] - closes[i - 1];
+      if (d >= 0) g += d; else l -= d;
+    }
+    let avgG = g / period, avgL = l / period;
+    for (let i = period + 1; i < closes.length; i++) {
+      const d = closes[i] - closes[i - 1];
+      avgG = (avgG * (period - 1) + (d > 0 ? d : 0)) / period;
+      avgL = (avgL * (period - 1) + (d < 0 ? -d : 0)) / period;
+      const rs = avgL === 0 ? 100 : avgG / avgL;
+      rsi[i] = 100 - (100 / (1 + rs));
+    }
+    return rsi;
+  }
+
+  function calcBollingerAndKeltner(closes, atr, period = 20) {
+    const ema20 = calcEMA(closes, period);
+    return closes.map((p, idx) => {
+      if (idx < period - 1) return { mid: p, upper: p, lower: p, squeeze: false };
+      const slice = closes.slice(idx - period + 1, idx + 1);
+      const mean = slice.reduce((a, b) => a + b, 0) / period;
+      const std = Math.sqrt(slice.reduce((a, b) => a + Math.pow(b - mean, 2), 0) / period);
+      const bbUpper = mean + 2 * std;
+      const bbLower = mean - 2 * std;
+      const kcUpper = ema20[idx] + 1.5 * atr[idx];
+      const kcLower = ema20[idx] - 1.5 * atr[idx];
+      const squeeze = bbUpper < kcUpper && bbLower > kcLower;
+      return { mid: mean, upper: bbUpper, lower: bbLower, squeeze };
+    });
+  }
+
+  function calcADX(candles, atr, period = 14) {
+    if (candles.length < period * 2) return new Array(candles.length).fill(20);
+    let plusDM = [0], minusDM = [0];
+    for (let i = 1; i < candles.length; i++) {
+      const up = candles[i].high - candles[i - 1].high;
+      const down = candles[i - 1].low - candles[i].low;
+      plusDM.push(up > down && up > 0 ? up : 0);
+      minusDM.push(down > up && down > 0 ? down : 0);
+    }
+    const pDI = calcEMA(plusDM, period).map((v, i) => atr[i] ? (v / atr[i]) * 100 : 0);
+    const mDI = calcEMA(minusDM, period).map((v, i) => atr[i] ? (v / atr[i]) * 100 : 0);
+    const dx = pDI.map((p, i) => (p + mDI[i]) ? (Math.abs(p - mDI[i]) / (p + mDI[i])) * 100 : 0);
+    return calcEMA(dx, period);
+  }
+
+  function calcParabolicSAR(candles, step = 0.02, max = 0.20) {
+    const out = [];
+    if (candles.length < 3) return out;
+    let bull = candles[1].close >= candles[0].close;
+    let af = step;
+    let ep = bull ? candles[0].high : candles[0].low;
+    let sar = bull ? candles[0].low : candles[0].high;
+    out.push({ sar, bull, flipped: false });
+
+    for (let i = 1; i < candles.length; i++) {
+      const c = candles[i];
+      const prev1 = candles[i - 1];
+      const prev2 = i >= 2 ? candles[i - 2] : prev1;
+      let nextSar = sar + af * (ep - sar);
+      let flipped = false;
+
+      if (bull) {
+        nextSar = Math.min(nextSar, prev1.low, prev2.low);
+        if (c.low < nextSar) {
+          bull = false; flipped = true; nextSar = ep; ep = c.low; af = step;
+        } else if (c.high > ep) {
+          ep = c.high; af = Math.min(af + step, max);
+        }
+      } else {
+        nextSar = Math.max(nextSar, prev1.high, prev2.high);
+        if (c.high > nextSar) {
+          bull = true; flipped = true; nextSar = ep; ep = c.high; af = step;
+        } else if (c.low < ep) {
+          ep = c.low; af = Math.min(af + step, max);
+        }
+      }
+      sar = nextSar;
+      out.push({ sar, bull, flipped });
+    }
+    return out;
+  }
+
+  function evaluateNonRepaintingSetup(i, candles, rsi, ema9, ema21, bbkc, adx, psar, macroBullishAtBar) {
+    const c = candles[i];
+    const r = rsi[i];
+    const b = bbkc[i];
+    const a = adx[i];
+    const p = psar[i];
+    const prevP = i > 0 ? psar[i - 1] : p;
+    const totalRange = Math.max(c.high - c.low, 0.00001);
+    const lowerWickPct = (Math.min(c.open, c.close) - c.low) / totalRange;
+    const upperWickPct = (c.high - Math.max(c.open, c.close)) / totalRange;
+
+    let score = 0;
+    let reasons = [];
+    const freshFlip = p.flipped || prevP.flipped;
+
+    if (p.bull) {
+      if (freshFlip) { score += 2; reasons.push('Locked PSAR Bull Flip ▲'); }
+      else { score += 1; reasons.push('Locked PSAR Bull ▲'); }
+    } else {
+      if (freshFlip) { score -= 2; reasons.push('Locked PSAR Bear Flip ▼'); }
+      else { score -= 1; reasons.push('Locked PSAR Bear ▼'); }
+    }
+
+    if (a < 25) {
+      if (r < 38 && c.close <= b.lower * 1.0008) { score += 2; reasons.push(`Oversold Bounce (RSI ${r.toFixed(1)})`); }
+      else if (r > 62 && c.close >= b.upper * 0.9992) { score -= 2; reasons.push(`Overbought Reject (RSI ${r.toFixed(1)})`); }
+    } else {
+      if (ema9[i] > ema21[i] && r > 45 && r < 68) { score += 2; reasons.push(`Trend Bull (ADX ${a.toFixed(0)})`); }
+      else if (ema9[i] < ema21[i] && r < 55 && r > 32) { score -= 2; reasons.push(`Trend Bear (ADX ${a.toFixed(0)})`); }
+    }
+
+    const prevSqueeze = i > 1 && bbkc[i - 1].squeeze;
+    if ((b.squeeze || prevSqueeze) && freshFlip) {
+      score += p.bull ? 1 : -1;
+      reasons.push('💥 Squeeze Breakout');
+    }
+
+    if (lowerWickPct >= 0.38) { score += 1; reasons.push('Lower Wick Reject'); }
+    else if (upperWickPct >= 0.38) { score -= 1; reasons.push('Upper Wick Reject'); }
+
+    if (score > 0 && macroBullishAtBar) { score += 1; reasons.push('Macro MTF Bull Aligned'); }
+    else if (score < 0 && !macroBullishAtBar) { score -= 1; reasons.push('Macro MTF Bear Aligned'); }
+    else if ((score > 0 && !macroBullishAtBar) || (score < 0 && macroBullishAtBar)) {
+      score = Math.trunc(score / 2);
+      reasons.push('Veto: Fights Macro Trend');
+    }
+
+    return { score, reasons, psarState: p, freshFlip, squeeze: b.squeeze || prevSqueeze };
+  }
+
+  async function fetchVerifiedPair(pairObj, entryTf, macroTf) {
+    const t0 = performance.now();
+    const [resE, resM] = await Promise.all([
+      fetch(`https://api.kraken.com/0/public/OHLC?pair=${pairObj.id}&interval=${entryTf}`).then(r => r.json()),
+      fetch(`https://api.kraken.com/0/public/OHLC?pair=${pairObj.id}&interval=${macroTf}`).then(r => r.json())
+    ]);
+
+    if ((resE.error && resE.error.length) || (resM.error && resM.error.length)) {
+      throw new Error(resE.error.join(', ') || resM.error.join(', '));
+    }
+
+    const latencyMs = Math.round(performance.now() - t0);
+    const kE = Object.keys(resE.result).find(k => k !== 'last');
+    const kM = Object.keys(resM.result).find(k => k !== 'last');
+
+    const candles = resE.result[kE].slice(-90).map(c => ({
+      time: Number(c[0]),
+      open: parseFloat(c[1]),
+      high: parseFloat(c[2]),
+      low: parseFloat(c[3]),
+      close: parseFloat(c[4])
+    }));
+
+    const macroCandles = resM.result[kM].slice(-60).map(c => ({
+      time: Number(c[0]),
+      close: parseFloat(c[4])
+    }));
+    const macroCloses = macroCandles.map(c => c.close);
+    const mE9 = calcEMA(macroCloses, 9);
+    const mE21 = calcEMA(macroCloses, 21);
+
+    function isMacroBullishAtTimestamp(ts) {
+      let idx = macroCandles.length - 1;
+      for (let m = 0; m < macroCandles.length; m++) {
+        if (macroCandles[m].time <= ts) idx = m;
+        else break;
+      }
+      return mE9[idx] >= mE21[idx];
+    }
+
+    const closes = candles.map(c => c.close);
+    const atr = calcATR(candles, 14);
+    const rsi = calcRSI(closes, 14);
+    const ema9 = calcEMA(closes, 9);
+    const ema21 = calcEMA(closes, 21);
+    const bbkc = calcBollingerAndKeltner(closes, atr, 20);
+    const adx = calcADX(candles, atr, 14);
+    const psar = calcParabolicSAR(candles, 0.02, 0.20);
+
+    let wins = 0, total = 0;
+    for (let i = candles.length - 54; i < candles.length - 2; i++) {
+      if (i < 25) continue;
+      const histMacroBull = isMacroBullishAtTimestamp(candles[i].time);
+      const ev = evaluateNonRepaintingSetup(i, candles, rsi, ema9, ema21, bbkc, adx, psar, histMacroBull);
+      if (Math.abs(ev.score) >= 3) {
+        total++;
+        if (ev.score > 0 && closes[i + 1] > closes[i]) wins++;
+        if (ev.score < 0 && closes[i + 1] < closes[i]) wins++;
+      }
+    }
+
+    const winRate = total > 0 ? (wins / total) : null;
+    const closedIdx = candles.length - 2;
+    const liveIdx = candles.length - 1;
+    const macroBullishNow = mE9[mE9.length - 1] >= mE21[mE21.length - 1];
+    const closedEval = evaluateNonRepaintingSetup(closedIdx, candles, rsi, ema9, ema21, bbkc, adx, psar, macroBullishNow);
+
+    const recent30 = candles.slice(-30);
+    const resistance = Math.max(...recent30.map(c => c.high));
+    const support = Math.min(...recent30.map(c => c.low));
+
+    return {
+      id: pairObj.id,
+      label: pairObj.label,
+      coinbase: pairObj.coinbase,
+      usdRole: pairObj.usdRole,
+      latencyMs,
+      candles,
+      ema9,
+      psar,
+      rsiClosed: rsi[closedIdx],
+      adxClosed: adx[closedIdx],
+      atrClosed: atr[closedIdx],
+      closedPrice: closes[closedIdx],
+      liveOpen: candles[liveIdx].open,
+      livePrice: closes[liveIdx],
+      lastCandleTime: candles[liveIdx].time,
+      decimals: closes[liveIdx] > 50 ? 2 : 4,
+      macroBullish: macroBullishNow,
+      macroTf,
+      entryTf,
+      winRate,
+      wins,
+      total,
+      closedEval,
+      support,
+      resistance
+    };
+  }
+
+  async function crossVerifySecondaryFeed(d) {
+    const el = document.getElementById('crossFeedVerify');
+    if (!d.coinbase) {
+      el.textContent = `🔍 Feed Audit: Kraken Interbank (${d.livePrice.toFixed(d.decimals)})`;
+      return;
+    }
+    try {
+      const res = await fetch(`https://api.coinbase.com/v2/prices/${d.coinbase}/spot`).then(r => r.json());
+      const cbPrice = parseFloat(res.data.amount);
+      const diff = Math.abs(cbPrice - d.livePrice);
+      el.textContent = `✅ Dual-Feed: Kraken ${d.livePrice.toFixed(d.decimals)} | Coinbase ${cbPrice.toFixed(d.decimals)} (Δ ${diff.toFixed(d.decimals)})`;
+    } catch (e) {
+      el.textContent = `📡 Kraken Verified (${d.livePrice.toFixed(d.decimals)})`;
+    }
+  }
+
+  function evaluateCircuitAndKelly(winRate, sampleSize = 0) {
+    const bankroll = parseFloat(document.getElementById('bankrollInput').value) || 1000;
+    const payoutPct = parseFloat(document.getElementById('payoutInput').value) || 92;
+    const b = payoutPct / 100;
+    const breakeven = 1 / (1 + b);
+
+    document.getElementById('kBreakeven').textContent = (breakeven * 100).toFixed(2) + '%';
+
+    const payoutGuardEl = document.getElementById('cbPayoutGuard');
+    const payoutVeto = payoutPct < 80;
+    if (payoutVeto) {
+      payoutGuardEl.textContent = `🚫 ${payoutPct}% (<80% VETO)`;
+      payoutGuardEl.style.color = 'var(--red)';
+    } else {
+      payoutGuardEl.textContent = `+${payoutPct}% OK`;
+      payoutGuardEl.style.color = 'var(--green)';
+    }
+
+    let netUsd = 0, consecutiveLosses = 0;
+    gradedHistory.forEach(item => {
+      netUsd += item.pnl;
+      if (item.win) consecutiveLosses = 0;
+      else consecutiveLosses++;
+    });
+
+    const pnlPct = (netUsd / bankroll) * 100;
+    circuitLockedReason = null;
+    if (pnlPct >= 10.0) {
+      circuitLockedReason = `🏆 DAILY PROFIT TARGET LOCKED (+${pnlPct.toFixed(1)}%)`;
+    } else if (pnlPct <= -6.0 || consecutiveLosses >= 3) {
+      circuitLockedReason = `🔒 CIRCUIT BREAKER TRIPPED (${consecutiveLosses}L Streak / ${pnlPct.toFixed(1)}%)`;
+    }
+
+    const cbStatusEl = document.getElementById('cbStatusText');
+    if (circuitLockedReason) {
+      cbStatusEl.textContent = circuitLockedReason;
+      cbStatusEl.style.color = 'var(--amber)';
+    } else {
+      cbStatusEl.textContent = '🛡️ Risk Guard: ACTIVE (Target +10% | Stop -6% or 3L Streak)';
+      cbStatusEl.style.color = 'var(--green)';
+    }
+
+    const stakeEl = document.getElementById('kStake');
+    const evEl = document.getElementById('kEv');
+
+    if (payoutVeto || circuitLockedReason || newsVetoActive) {
+      stakeEl.textContent = `$0.00 (${newsVetoActive ? 'Macro News Veto' : (payoutVeto ? 'Payout < 80% Veto' : 'Circuit Breaker')})`;
+      stakeEl.style.color = 'var(--red)';
+      evEl.textContent = `$0.00 (Capital Protected)`;
+      return 0;
+    }
+
+    if (winRate === null || sampleSize < 3) {
+      stakeEl.textContent = `$0.00 (Sample ${sampleSize}/3 signals)`;
+      stakeEl.style.color = 'var(--amber)';
+      evEl.textContent = `$0.00 (Awaiting Verified Sample)`;
+      return 0;
+    }
+
+    const fullKelly = winRate - ((1 - winRate) / b);
+    const quarterKelly = Math.max(0, fullKelly * 0.25);
+    const recStake = Math.round(bankroll * quarterKelly);
+
+    if (recStake <= 0) {
+      stakeEl.textContent = `$0.00 (WR ${(winRate * 100).toFixed(1)}% ≤ ${(breakeven * 100).toFixed(1)}% Breakeven)`;
+      stakeEl.style.color = 'var(--amber)';
+      evEl.textContent = `$0.00 (Negative EV Blocked)`;
+      return 0;
+    } else {
+      stakeEl.textContent = `$${recStake}.00 (${(quarterKelly * 100).toFixed(2)}% of Bankroll)`;
+      stakeEl.style.color = 'var(--green)';
+      const ev = (winRate * recStake * b) - ((1 - winRate) * recStake);
+      evEl.textContent = `+$${ev.toFixed(2)} per trade at ${(winRate * 100).toFixed(1)}% WR`;
+      evEl.style.color = 'var(--green)';
+      return recStake;
+    }
+  }
+
+  window.manualOverrideTrade = function(index, didWin) {
+    const item = gradedHistory[index];
+    if (!item) return;
+    const payout = (parseFloat(document.getElementById('payoutInput').value) || 92) / 100;
+    item.win = didWin;
+    item.pnl = didWin ? item.stake * payout : -item.stake;
+    saveVault();
+    renderLedgerAndCircuitBreaker();
+  };
+
+  function renderLedgerAndCircuitBreaker() {
+    const bankroll = parseFloat(document.getElementById('bankrollInput').value) || 1000;
+    let wins = 0, losses = 0, netUsd = 0, lossStreak = 0;
+
+    gradedHistory.forEach(item => {
+      netUsd += item.pnl;
+      if (item.win) { wins++; lossStreak = 0; }
+      else { losses++; lossStreak++; }
+    });
+
+    const pnlPct = (netUsd / bankroll) * 100;
+    const cbPnlEl = document.getElementById('cbNetPnl');
+    cbPnlEl.textContent = `${netUsd >= 0 ? '+$' : '-$'}${Math.abs(netUsd).toFixed(2)} (${pnlPct >= 0 ? '+' : ''}${pnlPct.toFixed(1)}%)`;
+    cbPnlEl.style.color = netUsd >= 0 ? 'var(--green)' : 'var(--red)';
+
+    const streakEl = document.getElementById('cbLossStreak');
+    streakEl.textContent = `${lossStreak} / 3 Max`;
+    streakEl.style.color = lossStreak >= 2 ? 'var(--red)' : 'var(--text-main)';
+
+    const scoreEl = document.getElementById('liveScoreText');
+    scoreEl.textContent = `${wins}W - ${losses}L (${netUsd >= 0 ? '+$' : '-$'}${Math.abs(netUsd).toFixed(2)})`;
+    scoreEl.style.color = netUsd >= 0 ? 'var(--green)' : 'var(--red)';
+
+    const tbody = document.getElementById('ledgerBody');
+    if (gradedHistory.length === 0 && !pendingTrade) {
+      tbody.innerHTML = `<tr><td colspan="5" style="text-align:center;color:var(--text-muted);">No trades logged yet. Waiting for non-repainting Score ≥ 3.</td></tr>`;
+      return;
+    }
+
+    let html = '';
+    if (pendingTrade) {
+      const secLeft = Math.max(0, Math.round((pendingTrade.expiresAtMs - Date.now()) / 1000));
+      html += `<tr>
+        <td>${pendingTrade.timeSAST}</td>
+        <td>${pendingTrade.label}</td>
+        <td style="color:${pendingTrade.dir === 'BUY' ? 'var(--green)' : 'var(--red)'};font-weight:800;">${pendingTrade.dir}</td>
+        <td>${pendingTrade.entry} → <em>Live WS...</em></td>
+        <td style="color:var(--amber);font-weight:800;">⏳ ${secLeft}s left ($${pendingTrade.stake})</td>
+      </tr>`;
+    }
+
+    gradedHistory.slice().reverse().slice(0, 10).forEach((item, revIdx) => {
+      const origIdx = gradedHistory.length - 1 - revIdx;
+      html += `<tr>
+        <td>${item.timeSAST}</td>
+        <td>${item.label}</td>
+        <td style="color:${item.dir === 'BUY' ? 'var(--green)' : 'var(--red)'};font-weight:800;">${item.dir}</td>
+        <td>${item.entry} → ${item.exit}</td>
+        <td>
+          <span style="color:${item.win ? 'var(--green)' : 'var(--red)'};font-weight:800;margin-right:4px;">
+            ${item.win ? '🏆 +$' + item.pnl.toFixed(2) : '❌ -$' + Math.abs(item.pnl).toFixed(2)}
+          </span>
+          <button class="btn-grade" onclick="manualOverrideTrade(${origIdx}, true)">✅W</button>
+          <button class="btn-grade" onclick="manualOverrideTrade(${origIdx}, false)">❌L</button>
+        </td>
+      </tr>`;
+    });
+    tbody.innerHTML = html;
+  }
+
+  function drawChart(d) {
+    const canvas = document.getElementById('chartCanvas');
+    const ctx = canvas.getContext('2d');
+    const w = canvas.width, h = canvas.height;
+    ctx.clearRect(0, 0, w, h);
+
+    const slice = d.candles.slice(-38);
+    const eSlice = d.ema9.slice(-38);
+    const pSlice = d.psar.slice(-38);
+
+    const maxP = Math.max(...slice.map(c => c.high), ...pSlice.map(p => p.sar), d.resistance);
+    const minP = Math.min(...slice.map(c => c.low), ...pSlice.map(p => p.sar), d.support);
+    const range = (maxP - minP) || 0.0001;
+    const yMap = (p) => 14 + ((maxP - p) / range) * (h - 28);
+
+    ctx.setLineDash([4, 4]);
+    ctx.strokeStyle = 'rgba(255, 61, 87, 0.5)';
+    ctx.beginPath(); ctx.moveTo(52, yMap(d.resistance)); ctx.lineTo(w - 8, yMap(d.resistance)); ctx.stroke();
+    ctx.strokeStyle = 'rgba(0, 230, 118, 0.5)';
+    ctx.beginPath(); ctx.moveTo(52, yMap(d.support)); ctx.lineTo(w - 8, yMap(d.support)); ctx.stroke();
+    ctx.setLineDash([]);
+
+    ctx.fillStyle = '#8b9bb4';
+    ctx.font = '10px sans-serif';
+    ctx.fillText(d.resistance.toFixed(d.decimals), 3, yMap(d.resistance) + 3);
+    ctx.fillText(d.support.toFixed(d.decimals), 3, yMap(d.support) + 3);
+
+    const left = 54;
+    const step = (w - left - 10) / slice.length;
+
+    slice.forEach((c, idx) => {
+      const x = left + idx * step + step / 2;
+      const isUp = c.close >= c.open;
+      ctx.strokeStyle = isUp ? '#00e676' : '#ff3d57';
+      ctx.fillStyle = isUp ? '#00e676' : '#ff3d57';
+      ctx.beginPath(); ctx.moveTo(x, yMap(c.high)); ctx.lineTo(x, yMap(c.low)); ctx.stroke();
+      const top = Math.min(yMap(c.open), yMap(c.close));
+      const bh = Math.max(Math.abs(yMap(c.close) - yMap(c.open)), 2);
+      ctx.fillRect(x - step * 0.28, top, step * 0.56, bh);
+    });
+
+    ctx.strokeStyle = '#2979ff';
+    ctx.lineWidth = 1.4;
+    ctx.beginPath();
+    eSlice.forEach((v, idx) => {
+      const x = left + idx * step + step / 2;
+      if (idx === 0) ctx.moveTo(x, yMap(v)); else ctx.lineTo(x, yMap(v));
+    });
+    ctx.stroke();
+
+    pSlice.forEach((p, idx) => {
+      const x = left + idx * step + step / 2;
+      const y = yMap(p.sar);
+      ctx.fillStyle = p.bull ? '#00e5ff' : '#ff4081';
+      ctx.beginPath(); ctx.arc(x, y, p.flipped ? 3.4 : 2.1, 0, Math.PI * 2); ctx.fill();
+    });
+  }
+
+  function displayPair(pairId, triggerAlerts = false) {
+    const d = matrixCache[pairId];
+    if (!d) return;
+
+    document.getElementById('pairSelect').value = pairId;
+    document.querySelectorAll('.matrix-card').forEach(el => {
+      el.classList.toggle('selected', el.dataset.pair === pairId);
+    });
+
+    document.getElementById('packetLatency').textContent = `📡 REST Latency: ${d.latencyMs} ms`;
+    crossVerifySecondaryFeed(d);
+
+    document.getElementById('mtfBadge').textContent = `M${d.macroTf} Macro: ${d.macroBullish ? 'BULL ▲' : 'BEAR ▼'}`;
+    document.getElementById('mtfBadge').style.color = d.macroBullish ? 'var(--green)' : 'var(--red)';
+
+    const pState = d.closedEval.psarState;
+    document.getElementById('psarBadge').textContent = `Locked PSAR: ${pState.bull ? 'BULL ▲' : 'BEAR ▼'}`;
+    document.getElementById('psarBadge').style.color = pState.bull ? 'var(--cyan)' : 'var(--magenta)';
+
+    const sqEl = document.getElementById('squeezeBadge');
+    sqEl.textContent = d.closedEval.squeeze ? '💥 VOLATILITY SQUEEZE ON' : `Regime: ${d.adxClosed >= 25 ? 'TREND' : 'RANGE'}`;
+    sqEl.style.color = d.closedEval.squeeze ? 'var(--amber)' : 'var(--text-main)';
+
+    document.getElementById('mClosed').textContent = d.closedPrice.toFixed(d.decimals);
+    document.getElementById('mLive').textContent = d.livePrice.toFixed(d.decimals);
+    document.getElementById('mRsi').textContent = d.rsiClosed.toFixed(1);
+    document.getElementById('mAdx').textContent = d.adxClosed.toFixed(1);
+    document.getElementById('mAtr').textContent = d.atrClosed.toFixed(d.decimals);
+
+    const wrEl = document.getElementById('btWinRate');
+    if (d.winRate === null) {
+      wrEl.textContent = `Point-in-Time 50-Bar WR: N/A (0/0 Signals)`;
+      wrEl.style.color = 'var(--amber)';
+    } else {
+      wrEl.textContent = `Point-in-Time 50-Bar WR: ${(d.winRate * 100).toFixed(1)}% (${d.wins}/${d.total})`;
+      wrEl.style.color = d.winRate >= 0.521 ? 'var(--green)' : 'var(--amber)';
+    }
+
+    const stake = evaluateCircuitAndKelly(d.winRate, d.total);
+    const payoutPct = parseFloat(document.getElementById('payoutInput').value) || 92;
+
+    const buyCeiling = d.liveOpen + 0.25 * d.atrClosed;
+    const sellFloor = d.liveOpen - 0.25 * d.atrClosed;
+    const sniperZoneEl = document.getElementById('sniperZoneText');
+    const sniperBadgeEl = document.getElementById('sniperStatusBadge');
+    const sigTitle = document.getElementById('sigTitle');
+    const sigDetails = document.getElementById('sigDetails');
+
+    const usdCorrelatedBusy = pendingTrade && pendingTrade.pair !== d.id && pendingTrade.usdRole !== 'CRYPTO' && d.usdRole !== 'CRYPTO';
+    const liveBullConfirm = d.livePrice >= d.liveOpen;
+    const liveBearConfirm = d.livePrice <= d.liveOpen;
+    const alreadyTradedThisCandle = lastTradedCandleByPair[d.id] === d.lastCandleTime;
+
+    if (newsVetoActive) {
+      sigTitle.className = 'sig-main c-sell';
+      sigTitle.textContent = '🔴 HIGH-IMPACT NEWS VETO ACTIVE';
+      sigDetails.textContent = 'SAST Macro Economic Release Shield is blocking entries to protect against news slippage.';
+      sniperBadgeEl.textContent = 'NEWS VETO';
+    } else if (circuitLockedReason) {
+      sigTitle.className = 'sig-main c-wait';
+      sigTitle.textContent = '🔒 CIRCUIT BREAKER ACTIVE';
+      sigDetails.textContent = circuitLockedReason;
+      sniperBadgeEl.textContent = 'LOCKED';
+    } else if (payoutPct < 80) {
+      sigTitle.className = 'sig-main c-sell';
+      sigTitle.textContent = `🚫 PAYOUT VETO (${payoutPct}% < 80%)`;
+      sigDetails.textContent = 'Broker payout dropped below 80%. Mathematical Expected Value is negative.';
+      sniperBadgeEl.textContent = 'VETO';
+    } else if (usdCorrelatedBusy) {
+      sigTitle.className = 'sig-main c-wait';
+      sigTitle.textContent = `🛡️ USD CORRELATION SHIELD — ${d.label}`;
+      sigDetails.textContent = `Active USD trade open on ${pendingTrade.label}. Blocking duplicate USD exposure.`;
+      sniperBadgeEl.textContent = 'SHIELDED';
+    } else if (d.closedEval.score >= 3 && liveBullConfirm) {
+      const chased = d.livePrice > buyCeiling;
+      sniperZoneEl.textContent = `🎯 Max Entry on PO: ≤ ${buyCeiling.toFixed(d.decimals)} (Live: ${d.livePrice.toFixed(d.decimals)})`;
+      sniperBadgeEl.textContent = chased ? '⚠️ PRICE CHASED — WAIT PULLBACK' : '✅ IN SNIPER ZONE';
+      sniperBadgeEl.style.color = chased ? 'var(--amber)' : 'var(--green)';
+
+      sigTitle.className = 'sig-main c-buy';
+      sigTitle.textContent = `▲ VERIFIED BUY — ${d.label} (M${d.entryTf})`;
+      sigDetails.textContent = `Non-Repainting Score +${d.closedEval.score} (Bar [-2] Locked + Live WS Tick Confirmed): ${d.closedEval.reasons.join(' • ')}`;
+
+      if (triggerAlerts && !chased && stake > 0 && !alreadyTradedThisCandle) {
+        playAlertTone('BUY');
+        speakAlert(`Verified Buy on ${d.label.replace('/', ' ')}. Non repainting score ${d.closedEval.score}. Recommended stake ${stake} dollars.`);
+      }
+      if (!pendingTrade && stake > 0 && !chased && !alreadyTradedThisCandle) {
+        const sast = getSASTTimeParts();
+        lastTradedCandleByPair[d.id] = d.lastCandleTime;
+        pendingTrade = {
+          timeSAST: sast.formatted,
+          pair: d.id,
+          label: d.label,
+          usdRole: d.usdRole,
+          dir: 'BUY',
+          entry: d.livePrice.toFixed(d.decimals),
+          entryNum: d.livePrice,
+          stake,
+          expiresAtMs: Date.now() + (d.entryTf * 60 * 1000)
+        };
+        renderLedgerAndCircuitBreaker();
+      }
+    } else if (d.closedEval.score <= -3 && liveBearConfirm) {
+      const chased = d.livePrice < sellFloor;
+      sniperZoneEl.textContent = `🎯 Min Entry on PO: ≥ ${sellFloor.toFixed(d.decimals)} (Live: ${d.livePrice.toFixed(d.decimals)})`;
+      sniperBadgeEl.textContent = chased ? '⚠️ PRICE CHASED — WAIT PULLBACK' : '✅ IN SNIPER ZONE';
+      sniperBadgeEl.style.color = chased ? 'var(--amber)' : 'var(--green)';
+
+      sigTitle.className = 'sig-main c-sell';
+      sigTitle.textContent = `▼ VERIFIED SELL — ${d.label} (M${d.entryTf})`;
+      sigDetails.textContent = `Non-Repainting Score ${d.closedEval.score} (Bar [-2] Locked + Live WS Tick Confirmed): ${d.closedEval.reasons.join(' • ')}`;
+
+      if (triggerAlerts && !chased && stake > 0 && !alreadyTradedThisCandle) {
+        playAlertTone('SELL');
+        speakAlert(`Verified Sell on ${d.label.replace('/', ' ')}. Non repainting score ${Math.abs(d.closedEval.score)}. Recommended stake ${stake} dollars.`);
+      }
+      if (!pendingTrade && stake > 0 && !chased && !alreadyTradedThisCandle) {
+        const sast = getSASTTimeParts();
+        lastTradedCandleByPair[d.id] = d.lastCandleTime;
+        pendingTrade = {
+          timeSAST: sast.formatted,
+          pair: d.id,
+          label: d.label,
+          usdRole: d.usdRole,
+          dir: 'SELL',
+          entry: d.livePrice.toFixed(d.decimals),
+          entryNum: d.livePrice,
+          stake,
+          expiresAtMs: Date.now() + (d.entryTf * 60 * 1000)
+        };
+        renderLedgerAndCircuitBreaker();
+      }
+    } else {
+      sigTitle.className = 'sig-main c-wait';
+      sigTitle.textContent = `⏸ NO VERIFIED SIGNAL — ${d.label}`;
+      sigDetails.textContent = `Closed Bar [-2] Score (${d.closedEval.score}/3). Refusing to guess or repaint — waiting for locked confluence.`;
+      sniperZoneEl.textContent = `🎯 Sniper Band: ${sellFloor.toFixed(d.decimals)} – ${buyCeiling.toFixed(d.decimals)}`;
+      sniperBadgeEl.textContent = 'STANDBY';
+      sniperBadgeEl.style.color = 'var(--cyan)';
+    }
+
+    drawChart(d);
+  }
+
+  async function scanAllPairsVerified() {
+    const entryTf = parseInt(document.getElementById('tfSelect').value, 10);
+    const macroTf = entryTf === 1 ? 5 : (entryTf === 5 ? 15 : 60);
+    const pill = document.getElementById('integrityPill');
+
+    const settled = await Promise.allSettled(PAIRS.map(p => fetchVerifiedPair(p, entryTf, macroTf)));
+    const results = settled.filter(s => s.status === 'fulfilled').map(s => s.value);
+
+    if (results.length === 0) {
+      pill.textContent = '🛑 NETWORK ERROR — HALTED';
+      return;
+    }
+
+    pill.textContent = `● ZERO-API-KEY LIVE (${results.length}/7)`;
+
+    let usdBullCount = 0;
+    results.forEach(r => {
+      matrixCache[r.id] = r;
+      if (r.usdRole === 'QUOTE' && r.closedEval.score <= -2) usdBullCount++;
+      if (r.usdRole === 'BASE' && r.closedEval.score >= 2) usdBullCount++;
+      if (r.usdRole === 'QUOTE' && r.closedEval.score >= 2) usdBullCount--;
+      if (r.usdRole === 'BASE' && r.closedEval.score <= -2) usdBullCount--;
+    });
+
+    const usdMeterEl = document.getElementById('cbUsdMeter');
+    if (usdBullCount >= 2) {
+      usdMeterEl.textContent = 'USD STRONG ▲';
+      usdMeterEl.style.color = 'var(--green)';
+    } else if (usdBullCount <= -2) {
+      usdMeterEl.textContent = 'USD WEAK ▼';
+      usdMeterEl.style.color = 'var(--red)';
+    } else {
+      usdMeterEl.textContent = 'USD MIXED';
+      usdMeterEl.style.color = 'var(--cyan)';
+    }
+
+    if (pendingTrade && Date.now() >= pendingTrade.expiresAtMs && matrixCache[pendingTrade.pair]) {
+      const m = matrixCache[pendingTrade.pair];
+      const payout = (parseFloat(document.getElementById('payoutInput').value) || 92) / 100;
+      const won = (pendingTrade.dir === 'BUY' && m.livePrice > pendingTrade.entryNum) ||
+                  (pendingTrade.dir === 'SELL' && m.livePrice < pendingTrade.entryNum);
+      gradedHistory.push({
+        ...pendingTrade,
+        exit: m.livePrice.toFixed(m.decimals),
+        win: won,
+        pnl: won ? pendingTrade.stake * payout : -pendingTrade.stake
+      });
+      pendingTrade = null;
+      saveVault();
+      renderLedgerAndCircuitBreaker();
+    }
+
+    document.getElementById('usdShieldTag').textContent = pendingTrade
+      ? `USD Shield: 1 Active (${pendingTrade.label})`
+      : 'USD Shield: Clear (Max 1 USD Trade)';
+
+    let bestPair = results[0];
+    results.forEach(r => {
+      const rWR = r.winRate !== null ? r.winRate : 0;
+      const bWR = bestPair.winRate !== null ? bestPair.winRate : 0;
+      const rRank = Math.abs(r.closedEval.score) * 100 + (rWR * 100);
+      const bRank = Math.abs(bestPair.closedEval.score) * 100 + (bWR * 100);
+      if (rRank > bRank) bestPair = r;
+    });
+
+    const grid = document.getElementById('matrixGrid');
+    grid.innerHTML = results.map(r => {
+      const isBest = r.id === bestPair.id && Math.abs(r.closedEval.score) >= 3;
+      const sigColor = r.closedEval.score >= 3 ? 'var(--green)' : (r.closedEval.score <= -3 ? 'var(--red)' : 'var(--text-muted)');
+      const sigLabel = r.closedEval.score >= 3 ? `▲ BUY (+${r.closedEval.score})` : (r.closedEval.score <= -3 ? `▼ SELL (${r.closedEval.score})` : `WAIT (${r.closedEval.score})`);
+      const wrLabel = r.winRate !== null ? `${(r.winRate * 100).toFixed(0)}% WR` : 'N/A WR';
+      return `
+        <div class="matrix-card ${isBest ? 'best-pick' : ''}" data-pair="${r.id}">
+          <div class="mc-top">
+            <span>${isBest ? '🏆 ' : ''}${r.label}</span>
+            <span style="color:${sigColor};">${sigLabel}</span>
+          </div>
+          <span class="mc-psar" style="color:${r.closedEval.psarState.bull ? 'var(--cyan)' : 'var(--magenta)'};">
+            ${r.closedEval.psarState.bull ? '● Locked PSAR ▲' : '● Locked PSAR ▼'} ${r.closedEval.squeeze ? '💥' : ''}
+          </span>
+          <div class="mc-bottom">
+            <span class="mc-price-val">${r.livePrice.toFixed(r.decimals)}</span>
+            <strong style="color:${(r.winRate || 0) >= 0.521 ? 'var(--green)' : 'var(--amber)'};">${wrLabel}</strong>
+          </div>
+        </div>
+      `;
+    }).join('');
+
+    document.querySelectorAll('.matrix-card').forEach(card => {
+      card.addEventListener('click', () => displayPair(card.dataset.pair, false));
+    });
+
+    document.getElementById('matrixStatus').textContent = `Top Setup: ${bestPair.label}`;
+    const targetId = (autoPickBest || !matrixCache[document.getElementById('pairSelect').value])
+      ? bestPair.id
+      : document.getElementById('pairSelect').value;
+    displayPair(targetId, true);
+  }
+
+  document.getElementById('exportCsvBtn').addEventListener('click', () => {
+    if (gradedHistory.length === 0) return;
+    const rows = [['SAST_Time', 'Pair', 'Direction', 'Entry', 'Exit', 'Stake_USD', 'Result', 'Net_PnL_USD']];
+    gradedHistory.forEach(h => {
+      rows.push([h.timeSAST, h.label, h.dir, h.entry, h.exit, h.stake, h.win ? 'WIN' : 'LOSS', h.pnl.toFixed(2)]);
+    });
+    const csvContent = 'data:text/csv;charset=utf-8,' + rows.map(r => r.join(',')).join('\n');
+    const link = document.createElement('a');
+    link.setAttribute('href', encodeURI(csvContent));
+    link.setAttribute('download', `quantsignal_pro11_audit_${new Date().toISOString().slice(0,10)}.csv`);
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  });
+
+  setInterval(() => {
+    const now = new Date();
+    const tfMin = parseInt(document.getElementById('tfSelect').value, 10);
+    const totalSec = tfMin * 60;
+    const elapsedSec = (now.getMinutes() % tfMin) * 60 + now.getSeconds();
+    const remainSec = totalSec - elapsedSec;
+
+    document.getElementById('countdownText').textContent = `Next M${tfMin} Candle Scan: ${remainSec}s`;
+    document.getElementById('timerBar').style.width = `${(elapsedSec / totalSec) * 100}%`;
+
+    const winEl = document.getElementById('entryWindowTag');
+    if (elapsedSec <= 15) {
+      winEl.textContent = `🎯 Sniper Window OPEN (${15 - elapsedSec}s left)`;
+      winEl.style.color = 'var(--green)';
+    } else {
+      winEl.textContent = `⏳ Mid-Candle — Wait ${remainSec}s for Next Open`;
+      winEl.style.color = 'var(--text-muted)';
+    }
+
+    if (pendingTrade) {
+      renderLedgerAndCircuitBreaker();
+      if (Date.now() >= pendingTrade.expiresAtMs) {
+        scanAllPairsVerified();
+      }
+    } else if (remainSec === totalSec || remainSec === 1) {
+      scanAllPairsVerified();
+    }
+  }, 1000);
+
+  document.getElementById('forceScanBtn').addEventListener('click', scanAllPairsVerified);
+  document.getElementById('pairSelect').addEventListener('change', (e) => displayPair(e.target.value, false));
+  document.getElementById('tfSelect').addEventListener('change', scanAllPairsVerified);
+  document.getElementById('bankrollInput').addEventListener('input', () => {
+    saveVault();
+    const d = matrixCache[document.getElementById('pairSelect').value];
+    if (d) evaluateCircuitAndKelly(d.winRate, d.total);
+    renderLedgerAndCircuitBreaker();
+  });
+  document.getElementById('payoutInput').addEventListener('input', () => {
+    const d = matrixCache[document.getElementById('pairSelect').value];
+    if (d) displayPair(d.id, false);
+  });
+
+  loadVault();
+  renderLedgerAndCircuitBreaker();
+  fetchKeylessLiveNews();
+  scanAllPairsVerified().then(() => {
+    connectLiveWebSocketStream();
+  });
+</script>
+</body>
+</html>
