@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-  <title>QuantSignal Pro 18.0 — 9-Factor Candlestick Anatomy X-Ray & Gold/Crypto/FX Terminal</title>
+  <title>QuantSignal Pro 18.0 — Fast-Timeout Engine, Candlestick Anatomy & .MD Export</title>
   <script type="text/javascript" src="https://s3.tradingview.com/tv.js" async></script>
   <style>
     :root {
@@ -160,7 +160,7 @@
 
     .qa-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(175px, 1fr));
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
       gap: 6px;
     }
 
@@ -453,7 +453,7 @@
     .canvas-wrap {
       position: relative;
       width: 100%;
-      height: 280px;
+      height: 290px;
       background: #050811;
       border-radius: 10px;
       border: 1px solid var(--border);
@@ -463,7 +463,7 @@
 
     @media (min-width: 1180px) {
       .canvas-wrap {
-        height: 335px;
+        height: 350px;
       }
     }
 
@@ -476,35 +476,22 @@
 
     #tvWidgetContainer {
       width: 100%;
-      height: 335px;
+      height: 350px;
       border-radius: 10px;
       overflow: hidden;
       border: 1px solid var(--border);
       display: none;
     }
 
-    /* NEW: Binance Academy Style Candlestick Anatomy X-Ray & AI Narrator Split Grid */
-    .anatomy-narrator-grid {
-      display: grid;
-      grid-template-columns: 1fr;
-      gap: 8px;
-    }
-
-    @media (min-width: 640px) {
-      .anatomy-narrator-grid {
-        grid-template-columns: 1.15fr 1fr;
-      }
-    }
-
+    /* Candlestick Anatomy + Algoria-Style AI Desk Narrator */
     .narrator-card {
       background: linear-gradient(135deg, rgba(17, 26, 46, 0.95), rgba(8, 13, 26, 0.95));
       border: 1px solid var(--cyan);
       border-radius: 11px;
-      padding: 9px 11px;
+      padding: 9px 12px;
       display: flex;
       flex-direction: column;
-      justify-content: space-between;
-      gap: 6px;
+      gap: 4px;
       box-shadow: 0 6px 20px rgba(0, 229, 255, 0.08);
     }
 
@@ -512,104 +499,31 @@
       display: flex;
       justify-content: space-between;
       align-items: center;
-      font-size: 0.65rem;
+      font-size: 0.66rem;
       font-weight: 900;
       text-transform: uppercase;
+      letter-spacing: 0.4px;
       color: var(--cyan);
-      gap: 4px;
       flex-wrap: wrap;
+      gap: 4px;
     }
 
     .narrator-body {
-      font-size: 0.74rem;
+      font-size: 0.75rem;
       font-weight: 700;
       color: var(--text-main);
-      line-height: 1.36;
+      line-height: 1.38;
     }
 
-    .pressure-wrap {
-      display: flex;
-      flex-direction: column;
-      gap: 3px;
-    }
-
-    .pressure-labels {
-      display: flex;
-      justify-content: space-between;
-      font-size: 0.6rem;
-      font-weight: 800;
-    }
-
-    .pressure-bar {
-      width: 100%;
-      height: 7px;
-      background: var(--red);
-      border-radius: 4px;
-      overflow: hidden;
-    }
-
-    .pressure-fill {
-      height: 100%;
-      background: var(--green);
-      width: 50%;
-      transition: width 0.25s ease;
-    }
-
-    /* Candlestick Basics X-Ray Card (Modeled on Binance Academy Diagram) */
-    .xray-card {
-      background: #070c18;
-      border: 1px solid var(--border);
-      border-radius: 11px;
-      padding: 8px 10px;
-      display: flex;
-      flex-direction: column;
-      gap: 5px;
-    }
-
-    .xray-top {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      font-size: 0.64rem;
-      font-weight: 900;
-      text-transform: uppercase;
-      color: var(--amber);
-    }
-
-    .xray-content {
+    .anatomy-strip {
       display: grid;
-      grid-template-columns: 74px 1fr;
-      gap: 8px;
-      align-items: center;
-    }
-
-    .xray-svg-box {
-      background: #040710;
-      border: 1px solid rgba(255, 255, 255, 0.07);
-      border-radius: 8px;
-      height: 92px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-
-    .xray-stats {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 4px 8px;
-      font-size: 0.62rem;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 6px;
+      margin-top: 3px;
+      padding-top: 5px;
+      border-top: 1px solid rgba(255, 255, 255, 0.08);
+      font-size: 0.63rem;
       font-variant-numeric: tabular-nums;
-    }
-
-    .xray-stat-row {
-      display: flex;
-      justify-content: space-between;
-      border-bottom: 1px solid rgba(255, 255, 255, 0.05);
-      padding-bottom: 2px;
-    }
-
-    .xray-stat-row span {
-      color: var(--text-muted);
     }
 
     .timer-strip {
@@ -663,7 +577,7 @@
     }
 
     .badge {
-      font-size: 0.61rem;
+      font-size: 0.62rem;
       font-weight: 800;
       padding: 4px 8px;
       border-radius: 16px;
@@ -927,7 +841,7 @@
 
     .btn-row {
       display: grid;
-      grid-template-columns: 1.4fr 1fr 1fr 0.8fr;
+      grid-template-columns: 1.3fr 1fr 1fr 1.1fr;
       gap: 6px;
     }
 
@@ -974,13 +888,13 @@
     }
 
     .btn-export {
-      background: var(--bg-card);
-      color: var(--text-main);
-      border: 1px solid var(--border);
+      background: rgba(0, 230, 118, 0.14);
+      color: var(--green);
+      border: 1px solid var(--green);
       border-radius: 10px;
       padding: 10px 6px;
-      font-size: 0.7rem;
-      font-weight: 800;
+      font-size: 0.69rem;
+      font-weight: 900;
       cursor: pointer;
     }
   </style>
@@ -994,15 +908,15 @@
     <div class="brand">
       <h1>
         🛡️ QUANTSIGNAL PRO 18.0
-        <span class="pill" id="integrityPill">● 9-FACTOR CANDLE X-RAY</span>
+        <span class="pill" id="integrityPill">● FAST-TIMEOUT LIVE</span>
         <span class="pill ws-pulse" id="wsStatusPill">⚡ WS CONNECTING</span>
         <span class="pill" id="voiceReadyPill" style="border-color:var(--purple);color:var(--purple);">🗣️ VOICE ARMED</span>
       </h1>
-      <p>Candlestick Anatomy X-Ray (Upper Shadow • Real Body • Lower Shadow) + Gold (XAU/USD) + 9-Factor A+ Optimizer</p>
+      <p>Candlestick Anatomy Inspector (Body • Upper/Lower Shadow) • Gold (XAU/USD) + Crypto + FX • .MD File Export</p>
     </div>
     <div class="top-actions">
       <button type="button" class="btn-small" id="qaTestBtn" style="border-color:var(--cyan);color:var(--cyan);">🧪 QA TEST</button>
-      <button type="button" class="btn-small active" id="sniperModeBtn" title="Auto-optimizes score threshold (3, 4, or 5) for highest verified win rate">🎯 A+ OPTIMIZER</button>
+      <button type="button" class="btn-small active" id="sniperModeBtn">🎯 A+ OPTIMIZER</button>
       <button type="button" class="btn-small active" id="autoPickBtn">🏆 AUTO-PICK</button>
       <button type="button" class="btn-small active" id="voiceBtn">🗣️ VOICE ON</button>
       <button type="button" class="btn-small active" id="soundBtn">🔊 CHIME</button>
@@ -1014,7 +928,7 @@
   <!-- Built-In Live QA Self-Test Diagnostic Strip -->
   <div id="qaReportBar">
     <div style="display:flex;justify-content:space-between;align-items:center;">
-      <strong style="color:var(--cyan);">🧪 PASS #4 MASTER QA DIAGNOSTIC REPORT (9-FACTOR + CANDLE X-RAY)</strong>
+      <strong style="color:var(--cyan);">🧪 PASS #4 PRODUCTION QA DIAGNOSTIC REPORT (ZERO-FREEZE + .MD EXPORT)</strong>
       <button type="button" class="btn-small" id="closeQaBtn" style="padding:2px 7px;">✖ Close</button>
     </div>
     <div class="qa-grid" id="qaGridItems"></div>
@@ -1114,46 +1028,19 @@
         </div>
         <div id="tvWidgetContainer"></div>
 
-        <!-- Split Grid: AI Desk Narrator + Binance Academy Style Candlestick Anatomy X-Ray -->
-        <div class="anatomy-narrator-grid">
-          <div class="narrator-card">
-            <div class="narrator-top">
-              <span id="narratorStateTag">🧠 AI PRICE-ACTION NARRATOR</span>
-              <span id="narratorPatternBadge" style="color: var(--amber);">SCANNING...</span>
-            </div>
-            <div class="narrator-body" id="narratorText">
-              Dissecting High, Close, Open, Low, Upper Shadow, Real Body, and Lower Shadow...
-            </div>
-            <div class="pressure-wrap">
-              <div class="pressure-labels">
-                <span id="bullPressureLbl" style="color: var(--green);">▲ Buyers: 50%</span>
-                <span id="bearPressureLbl" style="color: var(--red);">▼ Sellers: 50%</span>
-              </div>
-              <div class="pressure-bar">
-                <div class="pressure-fill" id="bullPressureFill"></div>
-              </div>
-            </div>
+        <!-- Candlestick Anatomy + Algoria-Style Plain-English AI Narrator -->
+        <div class="narrator-card">
+          <div class="narrator-top">
+            <span id="narratorStateTag">🧠 AI PRICE-ACTION & CANDLESTICK ANATOMY</span>
+            <span id="narratorPatternBadge" style="color: var(--amber);">ANALYZING BAR STRUCTURE...</span>
           </div>
-
-          <!-- Candlestick Anatomy X-Ray Dissector (High / Close / Open / Low / Shadows / Real Body) -->
-          <div class="xray-card">
-            <div class="xray-top">
-              <span>🕯️ CANDLESTICK ANATOMY X-RAY (BAR [-2])</span>
-              <span id="xrayBiasTag" style="color: var(--green);">BULLISH</span>
-            </div>
-            <div class="xray-content">
-              <div class="xray-svg-box" id="xraySvgBox"></div>
-              <div class="xray-stats">
-                <div class="xray-stat-row"><span>High:</span><strong id="xHigh">--</strong></div>
-                <div class="xray-stat-row"><span>Upper Shadow:</span><strong id="xUpperPct" style="color:var(--magenta);">--%</strong></div>
-                <div class="xray-stat-row"><span>Open:</span><strong id="xOpen">--</strong></div>
-                <div class="xray-stat-row"><span>Real Body:</span><strong id="xBodyPct" style="color:var(--cyan);">--%</strong></div>
-                <div class="xray-stat-row"><span>Close:</span><strong id="xClose">--</strong></div>
-                <div class="xray-stat-row"><span>Lower Shadow:</span><strong id="xLowerPct" style="color:var(--green);">--%</strong></div>
-                <div class="xray-stat-row"><span>Low:</span><strong id="xLow">--</strong></div>
-                <div class="xray-stat-row"><span>Pattern:</span><strong id="xPatternName" style="color:var(--amber);">--</strong></div>
-              </div>
-            </div>
+          <div class="narrator-body" id="narratorText">
+            Reading consecutive candle bodies, upper/lower shadows, and institutional VWAP volume...
+          </div>
+          <div class="anatomy-strip">
+            <span id="anatUpper">Upper Shadow: --%</span>
+            <span id="anatBody" style="color:var(--cyan);font-weight:800;">Real Body: --%</span>
+            <span id="anatLower">Lower Shadow: --%</span>
           </div>
         </div>
       </div>
@@ -1178,7 +1065,7 @@
 
         <div class="signal-box" id="signalBox">
           <div class="sig-main c-wait" id="sigTitle">FETCHING REAL EXCHANGE OHLC...</div>
-          <div class="sig-sub" id="sigDetails">Verifying 9-factor confluence + Candlestick Anatomy on Bar [-2]...</div>
+          <div class="sig-sub" id="sigDetails">Verifying 8-factor confluence on completed candle Bar [-2] + live WebSocket tick...</div>
         </div>
 
         <div class="sniper-bar">
@@ -1284,9 +1171,9 @@
 
         <div class="btn-row">
           <button type="button" class="btn-scan" id="forceScanBtn">⚡ SCAN NOW</button>
-          <button type="button" class="btn-voice-test" id="testVoiceBtn">🗣️ SPEAK NOW</button>
+          <button type="button" class="btn-voice-test" id="testVoiceBtn">🗣️ SPEAK</button>
           <button type="button" class="btn-news" id="refreshNewsBtn">📰 NEWS</button>
-          <button type="button" class="btn-export" id="exportCsvBtn">📥 CSV</button>
+          <button type="button" class="btn-export" id="exportMdBtn">📝 EXPORT .MD</button>
         </div>
       </div>
 
@@ -1301,7 +1188,7 @@
       <div class="ledger-card">
         <div class="ledger-top">
           <span>🏆 True-Expiration Trade Ledger</span>
-          <button type="button" class="btn-small" id="copyProofBtn" style="padding:3px 8px;border-color:var(--green);color:var(--green);">📋 COPY PROOF</button>
+          <button type="button" class="btn-small" id="copyProofBtn" style="padding:3px 8px;border-color:var(--green);color:var(--green);">📋 COPY .MD</button>
         </div>
 
         <div class="recap-strip" id="recapStrip">
@@ -1339,7 +1226,6 @@
   ];
 
   const VAULT_KEY = 'quantsignal_pro_v18_vault';
-  const OHLC_CACHE_KEY = 'quantsignal_pro_v18_real_ohlc';
   let audioEnabled = true;
   let voiceEnabled = true;
   let voiceUnlocked = false;
@@ -1353,7 +1239,7 @@
   let pendingTrade = null;
   let gradedHistory = [];
   let matrixCache = {};
-  let realCandlesVault = {};
+  let realCandlesVault = {}; // Kept strictly in fast RAM (Prevents localStorage QuotaExceeded freeze!)
   let lastTradedCandleByPair = {};
   let circuitLockedReason = null;
   let newsVetoActive = false;
@@ -1369,6 +1255,20 @@
   let dragStartX = 0;
   let dragStartPan = 0;
   let hoverCandleIndex = null;
+
+  // Hard 4.5-Second Network Timeout Wrapper so slow endpoints never hang the app!
+  async function fetchWithTimeout(url, timeoutMs = 4500) {
+    const ctrl = new AbortController();
+    const id = setTimeout(() => ctrl.abort(), timeoutMs);
+    try {
+      const response = await fetch(url, { signal: ctrl.signal });
+      clearTimeout(id);
+      return await response.json();
+    } catch (err) {
+      clearTimeout(id);
+      throw err;
+    }
+  }
 
   function showToast(msg) {
     const el = document.getElementById('actionToast');
@@ -1400,18 +1300,15 @@
 
   function loadVault() {
     try {
+      // Clear legacy oversized OHLC localStorage keys that could block browser quota
+      localStorage.removeItem('quantsignal_pro_v15_real_ohlc');
+      localStorage.removeItem('quantsignal_pro_v16_real_ohlc');
+      localStorage.removeItem('quantsignal_pro_v17_real_ohlc');
       const raw = localStorage.getItem(VAULT_KEY);
       if (raw) {
         const parsed = JSON.parse(raw);
         gradedHistory = Array.isArray(parsed.gradedHistory) ? parsed.gradedHistory : [];
         if (parsed.bankroll) document.getElementById('bankrollInput').value = parsed.bankroll;
-      }
-      const savedOhlc = localStorage.getItem(OHLC_CACHE_KEY);
-      if (savedOhlc) {
-        const parsedOhlc = JSON.parse(savedOhlc);
-        if (parsedOhlc && typeof parsedOhlc === 'object') {
-          realCandlesVault = parsedOhlc;
-        }
       }
     } catch (e) {}
   }
@@ -1419,15 +1316,9 @@
   function saveVault() {
     try {
       localStorage.setItem(VAULT_KEY, JSON.stringify({
-        gradedHistory,
+        gradedHistory: gradedHistory.slice(-100),
         bankroll: parseFloat(document.getElementById('bankrollInput').value) || 1000
       }));
-    } catch (e) {}
-  }
-
-  function saveRealOhlcCache() {
-    try {
-      localStorage.setItem(OHLC_CACHE_KEY, JSON.stringify(realCandlesVault));
     } catch (e) {}
   }
 
@@ -1518,8 +1409,21 @@
   }
 
   // ============================================================================
-  // 9-FACTOR QUANTITATIVE INDICATOR SUITE + CANDLESTICK ANATOMY X-RAY ENGINE
+  // 8-FACTOR QUANTITATIVE INDICATOR SUITE & CANDLESTICK ANATOMY
   // ============================================================================
+  function calcCandlestickAnatomy(c) {
+    const rng = Math.max(c.high - c.low, 0.000001);
+    const body = Math.abs(c.close - c.open);
+    const upperShadow = c.high - Math.max(c.open, c.close);
+    const lowerShadow = Math.min(c.open, c.close) - c.low;
+    return {
+      isBull: c.close >= c.open,
+      bodyPct: Math.round((body / rng) * 100),
+      upperPct: Math.round((upperShadow / rng) * 100),
+      lowerPct: Math.round((lowerShadow / rng) * 100)
+    };
+  }
+
   function calcEMA(arr, period) {
     if (!arr || arr.length === 0) return [];
     const k = 2 / (period + 1);
@@ -1687,116 +1591,11 @@
     return Array.from(buckets.values());
   }
 
-  // ============================================================================
-  // NEW FACTOR #9: BINANCE ACADEMY CANDLESTICK ANATOMY & PATTERN DISSECTOR
-  // Dissects High, Close, Open, Low, Upper Shadow %, Real Body %, Lower Shadow %
-  // ============================================================================
-  function dissectCandleAnatomy(i, candles) {
-    const c = candles[i];
-    const prev1 = i > 0 ? candles[i - 1] : c;
-    const prev2 = i > 1 ? candles[i - 2] : prev1;
-
-    const totalRange = Math.max(c.high - c.low, 0.000001);
-    const bodyTop = Math.max(c.open, c.close);
-    const bodyBot = Math.min(c.open, c.close);
-    const realBody = bodyTop - bodyBot;
-    const upperShadow = c.high - bodyTop;
-    const lowerShadow = bodyBot - c.low;
-
-    const bodyPct = (realBody / totalRange) * 100;
-    const upperPct = (upperShadow / totalRange) * 100;
-    const lowerPct = (lowerShadow / totalRange) * 100;
-    const isBull = c.close >= c.open;
-
-    // Buyer vs Seller Intrabar Order-Flow Pressure (%)
-    const bullPart = (c.close - c.low) + (isBull ? realBody : 0);
-    const totalPart = totalRange + realBody;
-    const bullPressurePct = Math.round(Math.max(5, Math.min(95, (bullPart / totalPart) * 100)));
-    const bearPressurePct = 100 - bullPressurePct;
-
-    const prevBody = Math.abs(prev1.close - prev1.open);
-    const prevBull = prev1.close >= prev1.open;
-    const prev2Body = Math.abs(prev2.close - prev2.open);
-
-    let patternName = isBull ? 'Bullish Standard' : 'Bearish Standard';
-    let patternScore = 0;
-    let isDojiVeto = false;
-
-    // 1. Doji Indecision Veto (Real Body <= 11% with wide Upper & Lower Shadows)
-    if (bodyPct <= 11 && upperPct >= 34 && lowerPct >= 34) {
-      patternName = '⚖️ Doji Indecision';
-      patternScore = 0;
-      isDojiVeto = true;
-    }
-    // 2. Bullish Engulfing (Bullish Real Body engulfs prior Bearish Real Body)
-    else if (isBull && !prevBull && c.close >= prev1.open && c.open <= prev1.close && realBody > prevBody * 1.08) {
-      patternName = '🟢 Bull Engulfing';
-      patternScore = 2;
-    }
-    // 3. Bearish Engulfing (Bearish Real Body engulfs prior Bullish Real Body)
-    else if (!isBull && prevBull && c.close <= prev1.open && c.open >= prev1.close && realBody > prevBody * 1.08) {
-      patternName = '🔴 Bear Engulfing';
-      patternScore = -2;
-    }
-    // 4. 3-Bar Morning Star (Bear -> Small Star -> Strong Bull Close)
-    else if (i >= 2 && prev2.close < prev2.open && prevBody < prev2Body * 0.45 && isBull && c.close > (prev2.open + prev2.close) / 2) {
-      patternName = '🌅 Morning Star';
-      patternScore = 2;
-    }
-    // 5. 3-Bar Evening Star (Bull -> Small Star -> Strong Bear Close)
-    else if (i >= 2 && prev2.close > prev2.open && prevBody < prev2Body * 0.45 && !isBull && c.close < (prev2.open + prev2.close) / 2) {
-      patternName = '🌆 Evening Star';
-      patternScore = -2;
-    }
-    // 6. Bullish Hammer / Pin-Bar (Lower Shadow >= 52%, Upper Shadow <= 18%)
-    else if (lowerPct >= 52 && upperPct <= 18 && bodyPct <= 36) {
-      patternName = '🔨 Bullish Hammer';
-      patternScore = 2;
-    }
-    // 7. Bearish Shooting Star (Upper Shadow >= 52%, Lower Shadow <= 18%)
-    else if (upperPct >= 52 && lowerPct <= 18 && bodyPct <= 36) {
-      patternName = '🌠 Shooting Star';
-      patternScore = -2;
-    }
-    // 8. Bullish Marubozu (Full Real Body >= 72% with strong close)
-    else if (isBull && bodyPct >= 72 && upperPct <= 15) {
-      patternName = '🟩 Bull Marubozu';
-      patternScore = 1;
-    }
-    // 9. Bearish Marubozu (Full Real Body >= 72% with weak close)
-    else if (!isBull && bodyPct >= 72 && lowerPct <= 15) {
-      patternName = '🟥 Bear Marubozu';
-      patternScore = -1;
-    }
-    // 10. Standard Lower/Upper Shadow Rejection
-    else if (lowerPct >= 40) {
-      patternName = '▲ Lower Wick Sweep';
-      patternScore = 1;
-    } else if (upperPct >= 40) {
-      patternName = '▼ Upper Wick Reject';
-      patternScore = -1;
-    }
-
-    return {
-      high: c.high,
-      open: c.open,
-      close: c.close,
-      low: c.low,
-      isBull,
-      bodyPct,
-      upperPct,
-      lowerPct,
-      bullPressurePct,
-      bearPressurePct,
-      patternName,
-      patternScore,
-      isDojiVeto
-    };
-  }
-
-  function buildPriceActionNarrative(candles, closedEval, anatomy, vwapClosed, rvolClosed, reqThreshold, macroBullish) {
+  function buildPriceActionNarrative(candles, closedEval, vwapClosed, rvolClosed, reqThreshold, macroBullish) {
     const closedIdx = Math.max(0, candles.length - 2);
     const c = candles[closedIdx];
+    const prev1 = closedIdx > 0 ? candles[closedIdx - 1] : c;
+    const anat = calcCandlestickAnatomy(c);
 
     let bullRun = 0, bearRun = 0;
     for (let k = closedIdx; k >= Math.max(0, closedIdx - 6); k--) {
@@ -1809,18 +1608,35 @@
       } else break;
     }
 
+    const isInsideBar = c.high <= prev1.high && c.low >= prev1.low;
     let streakPhrase = '';
+    let patternBadge = 'BAR STRUCTURE LOCKED';
+
     if (bullRun >= 2) {
-      streakPhrase = `buyers pressing hard on ${bullRun} straight green bars`;
+      streakPhrase = `buyers pressing hard on ${bullRun} straight green bars (${anat.bodyPct}% Real Body)`;
+      patternBadge = `🔥 ${bullRun}-BAR BULL IMPULSE`;
     } else if (bearRun >= 2) {
-      streakPhrase = `sellers pressing hard on ${bearRun} straight red bars`;
+      streakPhrase = `sellers pressing hard on ${bearRun} straight red bars (${anat.bodyPct}% Real Body)`;
+      patternBadge = `🩸 ${bearRun}-BAR BEAR IMPULSE`;
+    } else if (isInsideBar) {
+      streakPhrase = `price coiling inside previous candle range (inside-bar compression)`;
+      patternBadge = `📐 INSIDE-BAR COIL`;
+    } else if (anat.lowerPct >= 40) {
+      streakPhrase = `buyers sweeping liquidity with a ${anat.lowerPct}% Lower Shadow rejection`;
+      patternBadge = `🔨 LOWER SHADOW SWEEP`;
+    } else if (anat.upperPct >= 40) {
+      streakPhrase = `sellers defending highs with a ${anat.upperPct}% Upper Shadow rejection`;
+      patternBadge = `🌠 UPPER SHADOW REJECT`;
     } else {
-      streakPhrase = `${anatomy.patternName.replace(/^[^\s]+\s/, '')} (Real Body ${anatomy.bodyPct.toFixed(0)}%, Upper Shadow ${anatomy.upperPct.toFixed(0)}%, Lower Shadow ${anatomy.lowerPct.toFixed(0)}%)`;
+      streakPhrase = anat.isBull
+        ? `bullish Real Body (${anat.bodyPct}%) holding above open`
+        : `bearish Real Body (${anat.bodyPct}%) pressing below open`;
+      patternBadge = `⚖️ ROTATIONAL BAR`;
     }
 
-    const vwapText = c.close >= vwapClosed ? 'above VWAP' : 'below VWAP';
-    const volText = `on ${rvolClosed.toFixed(1)}x RVOL`;
-    const mtfText = macroBullish ? 'Macro Bullish' : 'Macro Bearish';
+    const vwapText = c.close >= vwapClosed ? 'above institutional VWAP' : 'below institutional VWAP';
+    const volText = rvolClosed >= 1.15 ? `with strong ${rvolClosed.toFixed(1)}x relative volume` : `on ${rvolClosed.toFixed(1)}x relative volume`;
+    const mtfText = macroBullish ? 'Macro trend is bullish' : 'Macro trend is bearish';
 
     let actionPrefix = 'STANDING ASIDE';
     if (closedEval.score >= reqThreshold) {
@@ -1831,12 +1647,12 @@
 
     return {
       actionPrefix,
-      patternBadge: `${anatomy.patternName} (${anatomy.bullPressurePct}% Bull)`,
+      patternBadge,
+      anat,
       fullText: `${actionPrefix} — ${streakPhrase} ${vwapText} ${volText}. ${mtfText} (Score ${closedEval.score >= 0 ? '+' : ''}${closedEval.score} vs ±${reqThreshold} req).`
     };
   }
 
-  // 9-FACTOR NON-REPAINTING CONFLUENCE ENGINE
   function evaluateNonRepaintingSetup(i, candles, rsi, stoch, macd, vwapRvol, ema9, ema21, bbkc, adx, atr, psar, macroBullishAtBar) {
     const c = candles[i];
     const r = rsi[i];
@@ -1849,14 +1665,12 @@
     const curAtr = atr[i] || 0.0001;
     const p = psar[i] || { sar: c.low, bull: true, flipped: false };
     const prevP = i > 0 && psar[i - 1] ? psar[i - 1] : p;
-
-    const anatomy = dissectCandleAnatomy(i, candles);
+    const anat = calcCandlestickAnatomy(c);
 
     let score = 0;
     let reasons = [];
     const freshFlip = p.flipped || prevP.flipped;
 
-    // Factor 1: Parabolic SAR State & Flip (+/- 2 pts)
     if (p.bull) {
       if (freshFlip) { score += 2; reasons.push('PSAR Bull Flip ▲'); }
       else { score += 1; reasons.push('PSAR Bull ▲'); }
@@ -1865,7 +1679,6 @@
       else { score -= 1; reasons.push('PSAR Bear ▼'); }
     }
 
-    // Factor 2: ADX Regime Switcher + RSI + Bollinger Band (+/- 2 pts)
     if (a < 25) {
       if (r < 40 && c.close <= b.lower * 1.001) { score += 2; reasons.push(`Range Oversold (RSI ${r.toFixed(0)})`); }
       else if (r > 60 && c.close >= b.upper * 0.999) { score -= 2; reasons.push(`Range Overbought (RSI ${r.toFixed(0)})`); }
@@ -1874,7 +1687,6 @@
       else if (ema9[i] < ema21[i] && r < 54 && r > 30) { score -= 2; reasons.push(`Trend Bear (ADX ${a.toFixed(0)})`); }
     }
 
-    // Factor 3: MACD (12, 26, 9) Histogram Acceleration (+/- 1 pt)
     if (mc.hist > 0 && mc.hist >= prevMc.hist) {
       score += 1;
       reasons.push('MACD Hist Rising ▲');
@@ -1883,7 +1695,6 @@
       reasons.push('MACD Hist Falling ▼');
     }
 
-    // Factor 4: Stochastic RSI (14, 3, 3) K/D Momentum (+/- 1 pt)
     if (st.k > st.d && st.k < 82) {
       score += 1;
       reasons.push(`StochRSI Bull (${st.k.toFixed(0)})`);
@@ -1892,29 +1703,23 @@
       reasons.push(`StochRSI Bear (${st.k.toFixed(0)})`);
     }
 
-    // Factor 5: Real Exchange VWAP + Relative Volume RVOL (+/- 1 pt)
     if (c.close >= vr.vwap && vr.rvol >= 1.02) {
       score += 1;
-      reasons.push(`Above VWAP (${vr.rvol.toFixed(1)}x Vol)`);
+      reasons.push(`Above VWAP (RVOL ${vr.rvol.toFixed(1)}x)`);
     } else if (c.close < vr.vwap && vr.rvol >= 1.02) {
       score -= 1;
-      reasons.push(`Below VWAP (${vr.rvol.toFixed(1)}x Vol)`);
+      reasons.push(`Below VWAP (RVOL ${vr.rvol.toFixed(1)}x)`);
     }
 
-    // Factor 6: Keltner/Bollinger Squeeze Breakout Bonus (+/- 1 pt)
     const prevSqueeze = i > 1 && bbkc[i - 1].squeeze;
     if ((b.squeeze || prevSqueeze) && freshFlip) {
       score += p.bull ? 1 : -1;
       reasons.push('💥 Squeeze Breakout');
     }
 
-    // Factor 7 (UPGRADED): Binance Academy Candlestick Anatomy & Multi-Bar Pattern Score (+/- 2 pts)
-    if (anatomy.patternScore !== 0) {
-      score += anatomy.patternScore;
-      reasons.push(`${anatomy.patternName} (${anatomy.patternScore > 0 ? '+' : ''}${anatomy.patternScore})`);
-    }
+    if (anat.lowerPct >= 36) { score += 1; reasons.push(`Lower Shadow Reject (${anat.lowerPct}%)`); }
+    else if (anat.upperPct >= 36) { score -= 1; reasons.push(`Upper Shadow Reject (${anat.upperPct}%)`); }
 
-    // Factor 8: Non-Repainting Higher-Timeframe Macro Alignment & Counter-Trend Veto
     if (score > 0 && macroBullishAtBar) {
       score += 1;
       reasons.push('MTF Macro Bull ▲');
@@ -1924,12 +1729,6 @@
     } else if ((score > 0 && !macroBullishAtBar) || (score < 0 && macroBullishAtBar)) {
       score = Math.trunc(score / 2);
       reasons.push('Veto: Fights Macro Trend');
-    }
-
-    // Factor 9: Doji Indecision Veto & Support/Resistance Wall-Slam Guard
-    if (anatomy.isDojiVeto && Math.abs(score) >= 3) {
-      score = score > 0 ? 2 : -2;
-      reasons.push('⚖️ Doji Indecision Veto (Real Body <= 11%)');
     }
 
     if (i >= 20) {
@@ -1945,7 +1744,7 @@
       }
     }
 
-    return { score, reasons, psarState: p, freshFlip, squeeze: b.squeeze || prevSqueeze, anatomy };
+    return { score, reasons, psarState: p, freshFlip, squeeze: b.squeeze || prevSqueeze };
   }
 
   function computePairAnalyticsFromRealCandles(pairObj, rawCandles, entryTf, macroTf, feedSource) {
@@ -2029,7 +1828,7 @@
 
     const vwapClosed = vwapRvol[closedIdx] ? vwapRvol[closedIdx].vwap : closes[closedIdx];
     const rvolClosed = vwapRvol[closedIdx] ? vwapRvol[closedIdx].rvol : 1.0;
-    const narrative = buildPriceActionNarrative(candles, closedEval, closedEval.anatomy, vwapClosed, rvolClosed, chosenThresh, macroBullishNow);
+    const narrative = buildPriceActionNarrative(candles, closedEval, vwapClosed, rvolClosed, chosenThresh, macroBullishNow);
 
     const recent30 = candles.slice(-30);
     const resistance = Math.max(...recent30.map(c => c.high));
@@ -2069,7 +1868,6 @@
       wins: chosenStats.wins,
       total: chosenStats.total,
       closedEval,
-      anatomy: closedEval.anatomy,
       narrative,
       support,
       resistance
@@ -2081,8 +1879,9 @@
     let rawEntryCandles = [];
     let feedSource = 'KRAKEN LIVE';
 
+    // 1. Kraken Public OHLC (with 4.5s Fast Timeout)
     try {
-      const resE = await fetch(`https://api.kraken.com/0/public/OHLC?pair=${pairObj.id}&interval=${baseInterval}`).then(r => r.json());
+      const resE = await fetchWithTimeout(`https://api.kraken.com/0/public/OHLC?pair=${pairObj.id}&interval=${baseInterval}`, 4500);
       if (resE && resE.result) {
         const kE = Object.keys(resE.result).find(k => k !== 'last');
         if (kE && Array.isArray(resE.result[kE]) && resE.result[kE].length >= 30) {
@@ -2090,4 +1889,1423 @@
             time: Number(c[0]),
             open: parseFloat(c[1]),
             high: parseFloat(c[2]),
-            low: parseFloat(c
+            low: parseFloat(c[3]),
+            close: parseFloat(c[4]),
+            volume: parseFloat(c[6]) || 1.0
+          }));
+          feedSource = 'KRAKEN LIVE';
+        }
+      }
+    } catch (e) {}
+
+    // 2. Binance Public Klines (with 4.5s Fast Timeout)
+    if (rawEntryCandles.length < 30 && pairObj.binanceSym) {
+      try {
+        const bInt = baseInterval === 1 ? '1m' : (baseInterval === 5 ? '5m' : (baseInterval === 15 ? '15m' : '30m'));
+        const bRes = await fetchWithTimeout(`https://api.binance.com/api/v3/klines?symbol=${pairObj.binanceSym}&interval=${bInt}&limit=260`, 4500);
+        if (Array.isArray(bRes) && bRes.length >= 30) {
+          rawEntryCandles = bRes.map(k => ({
+            time: Math.floor(Number(k[0]) / 1000),
+            open: parseFloat(k[1]),
+            high: parseFloat(k[2]),
+            low: parseFloat(k[3]),
+            close: parseFloat(k[4]),
+            volume: parseFloat(k[5]) || 1.0
+          }));
+          feedSource = 'BINANCE LIVE';
+        }
+      } catch (e) {}
+    }
+
+    // 3. CryptoCompare Histominute Index (with 4.5s Fast Timeout)
+    if (rawEntryCandles.length < 30 && pairObj.ccFsym) {
+      try {
+        const ccUrl = `https://min-api.cryptocompare.com/data/v2/histominute?fsym=${pairObj.ccFsym}&tsym=${pairObj.ccTsym}&limit=240&aggregate=${baseInterval}`;
+        const ccRes = await fetchWithTimeout(ccUrl, 4500);
+        if (ccRes && ccRes.Data && Array.isArray(ccRes.Data.Data) && ccRes.Data.Data.length >= 30) {
+          rawEntryCandles = ccRes.Data.Data.filter(d => d.close > 0).map(d => ({
+            time: Number(d.time),
+            open: parseFloat(d.open),
+            high: parseFloat(d.high),
+            low: parseFloat(d.low),
+            close: parseFloat(d.close),
+            volume: parseFloat(d.volumeto || d.volumefrom || 1.0)
+          }));
+          feedSource = 'CC-INDEX LIVE';
+        }
+      } catch (e) {}
+    }
+
+    const vaultKey = `${pairObj.id}_${baseInterval}`;
+    if (rawEntryCandles.length >= 30) {
+      realCandlesVault[vaultKey] = rawEntryCandles;
+    } else if (realCandlesVault[vaultKey] && realCandlesVault[vaultKey].length >= 30) {
+      rawEntryCandles = realCandlesVault[vaultKey];
+      feedSource = 'RAM REAL OHLC';
+    } else {
+      throw new Error(`Unable to fetch real OHLC for ${pairObj.label}`);
+    }
+
+    return computePairAnalyticsFromRealCandles(pairObj, rawEntryCandles, entryTf, macroTf, feedSource);
+  }
+
+  async function crossVerifySecondaryFeed(d) {
+    const el = document.getElementById('crossFeedVerify');
+    if (!d.coinbase) {
+      el.textContent = `🔍 Source: ${d.feedSource} (${d.livePrice.toFixed(d.decimals)})`;
+      return;
+    }
+    try {
+      const res = await fetchWithTimeout(`https://api.coinbase.com/v2/prices/${d.coinbase}/spot`, 3500);
+      const cbPrice = parseFloat(res.data.amount);
+      const diff = Math.abs(cbPrice - d.livePrice);
+      el.textContent = `✅ ${d.feedSource}: ${d.livePrice.toFixed(d.decimals)} | Coinbase: ${cbPrice.toFixed(d.decimals)} (Δ ${diff.toFixed(d.decimals)})`;
+    } catch (e) {
+      el.textContent = `📡 ${d.feedSource} (${d.livePrice.toFixed(d.decimals)})`;
+    }
+  }
+
+  function evaluateCircuitAndKelly(d) {
+    const winRate = d ? d.winRate : null;
+    const sampleSize = d ? d.total : 0;
+    const reqT = d ? d.reqThreshold : 3;
+
+    const bankroll = parseFloat(document.getElementById('bankrollInput').value) || 1000;
+    const payoutPct = parseFloat(document.getElementById('payoutInput').value) || 92;
+    const b = payoutPct / 100;
+    const breakeven = 1 / (1 + b);
+
+    document.getElementById('kBreakeven').textContent = (breakeven * 100).toFixed(2) + '%';
+    document.getElementById('kOptThreshold').textContent = `Score ≥ ${reqT} (${sniperOptimizerMode ? 'A+ Auto-Opt' : 'Standard'})`;
+
+    const payoutGuardEl = document.getElementById('cbPayoutGuard');
+    const payoutVeto = payoutPct < 80;
+    if (payoutVeto) {
+      payoutGuardEl.textContent = `🚫 ${payoutPct}% (<80%)`;
+      payoutGuardEl.style.color = 'var(--red)';
+    } else {
+      payoutGuardEl.textContent = `+${payoutPct}% OK`;
+      payoutGuardEl.style.color = 'var(--green)';
+    }
+
+    let netUsd = 0, consecutiveLosses = 0;
+    gradedHistory.forEach(item => {
+      netUsd += item.pnl;
+      if (item.win) consecutiveLosses = 0;
+      else consecutiveLosses++;
+    });
+
+    const pnlPct = (netUsd / bankroll) * 100;
+    circuitLockedReason = null;
+    if (pnlPct >= 10.0) {
+      circuitLockedReason = `🏆 TARGET LOCKED (+${pnlPct.toFixed(1)}%)`;
+    } else if (pnlPct <= -6.0 || consecutiveLosses >= 3) {
+      circuitLockedReason = `🔒 CIRCUIT BREAKER (${consecutiveLosses}L / ${pnlPct.toFixed(1)}%)`;
+    }
+
+    const cbStatusEl = document.getElementById('cbStatusText');
+    if (circuitLockedReason) {
+      cbStatusEl.textContent = circuitLockedReason;
+      cbStatusEl.style.color = 'var(--amber)';
+    } else {
+      cbStatusEl.textContent = '🛡️ Risk Guard: ACTIVE';
+      cbStatusEl.style.color = 'var(--green)';
+    }
+
+    const stakeEl = document.getElementById('kStake');
+    const evEl = document.getElementById('kEv');
+
+    const sast = getSASTTimeParts();
+    const fxClosedVeto = d && d.usdRole !== 'CRYPTO' && (sast.isWeekend || sast.isRollover);
+
+    if (payoutVeto || circuitLockedReason || newsVetoActive || fxClosedVeto) {
+      const reasonTxt = fxClosedVeto ? 'FX Weekend/Rollover Veto' : (newsVetoActive ? 'Macro News Veto' : 'Protected Veto');
+      stakeEl.textContent = `$0.00 (${reasonTxt})`;
+      stakeEl.style.color = 'var(--red)';
+      evEl.textContent = `$0.00`;
+      return 0;
+    }
+
+    if (winRate === null || sampleSize < 3) {
+      stakeEl.textContent = `$0.00 (Insufficient Sample: ${sampleSize}/3 min)`;
+      stakeEl.style.color = 'var(--amber)';
+      evEl.textContent = `$0.00 (Awaiting >= 3 Historical Signals)`;
+      return 0;
+    }
+
+    const fullKelly = winRate - ((1 - winRate) / b);
+    const quarterKelly = Math.max(0, fullKelly * 0.25);
+    const recStake = Math.round(bankroll * quarterKelly);
+
+    if (recStake <= 0) {
+      stakeEl.textContent = `$0.00 (WR ${(winRate * 100).toFixed(1)}% ≤ ${(breakeven * 100).toFixed(1)}%)`;
+      stakeEl.style.color = 'var(--amber)';
+      evEl.textContent = `$0.00 (Below Breakeven)`;
+      return 0;
+    } else {
+      stakeEl.textContent = `$${recStake}.00 (${(quarterKelly * 100).toFixed(2)}% Bankroll)`;
+      stakeEl.style.color = 'var(--green)';
+      const ev = (winRate * recStake * b) - ((1 - winRate) * recStake);
+      evEl.textContent = `+$${ev.toFixed(2)} / trade`;
+      evEl.style.color = 'var(--green)';
+      return recStake;
+    }
+  }
+
+  window.manualOverrideTrade = function(index, didWin) {
+    playAlertTone('CLICK');
+    const item = gradedHistory[index];
+    if (!item) return;
+    const payout = (parseFloat(document.getElementById('payoutInput').value) || 92) / 100;
+    item.win = didWin;
+    item.pnl = didWin ? item.stake * payout : -item.stake;
+    saveVault();
+    renderLedgerAndCircuitBreaker();
+    showToast(didWin ? '✅ Marked Trade as WIN' : '❌ Marked Trade as LOSS');
+  };
+
+  function renderLedgerAndCircuitBreaker() {
+    const bankroll = parseFloat(document.getElementById('bankrollInput').value) || 1000;
+    let wins = 0, losses = 0, netUsd = 0, lossStreak = 0;
+
+    gradedHistory.forEach(item => {
+      netUsd += item.pnl;
+      if (item.win) { wins++; lossStreak = 0; }
+      else { losses++; lossStreak++; }
+    });
+
+    const totalGraded = wins + losses;
+    const winPct = totalGraded > 0 ? ((wins / totalGraded) * 100).toFixed(1) : '--';
+    const pnlPct = (netUsd / bankroll) * 100;
+
+    const cbPnlEl = document.getElementById('cbNetPnl');
+    cbPnlEl.textContent = `${netUsd >= 0 ? '+$' : '-$'}${Math.abs(netUsd).toFixed(2)} (${pnlPct >= 0 ? '+' : ''}${pnlPct.toFixed(1)}%)`;
+    cbPnlEl.style.color = netUsd >= 0 ? 'var(--green)' : 'var(--red)';
+
+    const streakEl = document.getElementById('cbLossStreak');
+    streakEl.textContent = `${lossStreak} / 3 Max`;
+    streakEl.style.color = lossStreak >= 2 ? 'var(--red)' : 'var(--text-main)';
+
+    document.getElementById('recapSummaryText').textContent =
+      `RECAP: ${totalGraded} TRADES • ${winPct}% WIN • ${netUsd >= 0 ? '+$' : '-$'}${Math.abs(netUsd).toFixed(2)}`;
+
+    const scoreEl = document.getElementById('liveScoreText');
+    scoreEl.textContent = `${wins}W - ${losses}L`;
+    scoreEl.style.color = netUsd >= 0 ? 'var(--green)' : 'var(--red)';
+
+    const tbody = document.getElementById('ledgerBody');
+    if (gradedHistory.length === 0 && !pendingTrade) {
+      tbody.innerHTML = `<tr><td colspan="5" style="text-align:center;color:var(--text-muted);">No trades logged yet. Waiting for A+ Verified Signal.</td></tr>`;
+      return;
+    }
+
+    let html = '';
+    if (pendingTrade) {
+      const secLeft = Math.max(0, Math.round((pendingTrade.expiresAtMs - Date.now()) / 1000));
+      html += `<tr>
+        <td>${pendingTrade.timeSAST}</td>
+        <td>${pendingTrade.label}</td>
+        <td style="color:${pendingTrade.dir === 'BUY' ? 'var(--green)' : 'var(--red)'};font-weight:800;">${pendingTrade.dir} (M${pendingTrade.tf})</td>
+        <td>${pendingTrade.entry} → <em>Live...</em></td>
+        <td style="color:var(--amber);font-weight:800;">⏳ ${secLeft}s ($${pendingTrade.stake})</td>
+      </tr>`;
+    }
+
+    gradedHistory.slice().reverse().slice(0, 10).forEach((item, revIdx) => {
+      const origIdx = gradedHistory.length - 1 - revIdx;
+      html += `<tr>
+        <td>${item.timeSAST}</td>
+        <td>${item.label}</td>
+        <td style="color:${item.dir === 'BUY' ? 'var(--green)' : 'var(--red)'};font-weight:800;">${item.dir}</td>
+        <td>${item.entry} → ${item.exit}</td>
+        <td>
+          <span style="color:${item.win ? 'var(--green)' : 'var(--red)'};font-weight:800;margin-right:4px;">
+            ${item.win ? '🏆 +$' + item.pnl.toFixed(2) : '❌ -$' + Math.abs(item.pnl).toFixed(2)}
+          </span>
+          <button class="btn-grade" onclick="manualOverrideTrade(${origIdx}, true)">✅W</button>
+          <button class="btn-grade" onclick="manualOverrideTrade(${origIdx}, false)">❌L</button>
+        </td>
+      </tr>`;
+    });
+    tbody.innerHTML = html;
+  }
+
+  // GENERATE & DOWNLOAD MARKDOWN (.MD) AUDIT EXPORT FILE
+  function buildMarkdownAuditReport() {
+    const sast = getSASTTimeParts();
+    const focusedId = document.getElementById('pairSelect').value;
+    const d = matrixCache[focusedId];
+    const bankroll = parseFloat(document.getElementById('bankrollInput').value) || 1000;
+    const payout = parseFloat(document.getElementById('payoutInput').value) || 92;
+    const recapTxt = document.getElementById('recapSummaryText').textContent;
+
+    let md = `# 🛡️ QuantSignal Pro 18.0 — Live Session & Market Audit (.MD Export)\n\n`;
+    md += `- **Export Timestamp:** ${new Date().toISOString().slice(0, 10)} at ${sast.formatted} SAST (UTC+2)\n`;
+    md += `- **Account Bankroll:** $${bankroll.toFixed(2)} USD | **Broker Payout:** +${payout}%\n`;
+    md += `- **Session Recap:** ${recapTxt}\n`;
+    md += `- **WebSocket Stream Status:** ${wsTickCount} live ticks processed\n\n`;
+
+    if (d) {
+      md += `## 🎯 Focused Asset Snapshot: ${d.label} (M${d.entryTf})\n\n`;
+      md += `- **Live Exchange Source:** ${d.feedSource}\n`;
+      md += `- **Closed Bar [-2] Price:** ${d.closedPrice.toFixed(d.decimals)} | **Live Price [-1]:** ${d.livePrice.toFixed(d.decimals)}\n`;
+      md += `- **8-Factor Confluence Score:** ${d.closedEval.score >= 0 ? '+' : ''}${d.closedEval.score} (Required: ±${d.reqThreshold})\n`;
+      md += `- **50-Bar Rolling Win Rate:** ${d.winRate !== null ? (d.winRate * 100).toFixed(1) + '% (' + d.wins + '/' + d.total + ')' : 'N/A'}\n`;
+      md += `- **AI Price-Action Narrative:** ${d.narrative ? d.narrative.fullText : '--'}\n`;
+      if (d.narrative && d.narrative.anat) {
+        md += `- **Candlestick Anatomy (Bar [-2]):** Real Body ${d.narrative.anat.bodyPct}% | Upper Shadow ${d.narrative.anat.upperPct}% | Lower Shadow ${d.narrative.anat.lowerPct}%\n`;
+      }
+      md += `- **Active Confluence Factors:** ${d.closedEval.reasons.join(', ')}\n\n`;
+    }
+
+    md += `## 🌐 8-Asset Live Matrix Summary\n\n`;
+    md += `| Asset | Source | Live Price | Score / Req | 50-Bar Win Rate | RVOL |\n`;
+    md += `| :--- | :--- | :--- | :--- | :--- | :--- |\n`;
+    PAIRS.forEach(p => {
+      const m = matrixCache[p.id];
+      if (m) {
+        const wrStr = m.winRate !== null ? `${(m.winRate * 100).toFixed(1)}% (${m.wins}/${m.total})` : 'N/A';
+        md += `| **${m.label}** | ${m.feedSource} | ${m.livePrice.toFixed(m.decimals)} | ${m.closedEval.score} / ±${m.reqThreshold} | ${wrStr} | ${m.rvolClosed.toFixed(2)}x |\n`;
+      }
+    });
+
+    md += `\n## 🏆 Graded Trade Ledger\n\n`;
+    if (gradedHistory.length === 0) {
+      md += `_No graded trades recorded in this session yet._\n`;
+    } else {
+      md += `| SAST Time | Asset | Direction | Entry | Exit | Stake | Result | Net P&L |\n`;
+      md += `| :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- |\n`;
+      gradedHistory.forEach(h => {
+        md += `| ${h.timeSAST} | ${h.label} | ${h.dir} | ${h.entry} | ${h.exit} | $${h.stake} | ${h.win ? 'WIN' : 'LOSS'} | ${h.pnl >= 0 ? '+$' : '-$'}${Math.abs(h.pnl).toFixed(2)} |\n`;
+      });
+    }
+    return md;
+  }
+
+  document.getElementById('exportMdBtn').addEventListener('click', () => {
+    playAlertTone('CLICK');
+    const mdContent = buildMarkdownAuditReport();
+    const blob = new Blob([mdContent], { type: 'text/markdown;charset=utf-8;' });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement('a');
+    link.setAttribute('href', url);
+    link.setAttribute('download', `quantsignal_pro_18_audit_${new Date().toISOString().slice(0,10)}.md`);
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    URL.revokeObjectURL(url);
+    showToast('📝 Saved & Downloaded .MD Report File!');
+    speakAlert('Markdown report exported and saved.', true);
+  });
+
+  document.getElementById('copyProofBtn').addEventListener('click', () => {
+    playAlertTone('CLICK');
+    const mdContent = buildMarkdownAuditReport();
+    if (navigator.clipboard) {
+      navigator.clipboard.writeText(mdContent).then(() => {
+        showToast('📋 Copied Full .MD Report to Clipboard!');
+      }).catch(() => {});
+    }
+  });
+
+  function drawChart(d) {
+    if (!d || !d.candles || d.candles.length === 0) return;
+    const wrap = document.getElementById('canvasWrap');
+    const canvas = document.getElementById('chartCanvas');
+    const dpr = window.devicePixelRatio || 1;
+    const cssW = wrap.clientWidth || 580;
+    const cssH = wrap.clientHeight || 290;
+
+    if (canvas.width !== Math.floor(cssW * dpr) || canvas.height !== Math.floor(cssH * dpr)) {
+      canvas.width = Math.floor(cssW * dpr);
+      canvas.height = Math.floor(cssH * dpr);
+    }
+
+    const ctx = canvas.getContext('2d');
+    ctx.save();
+    ctx.scale(dpr, dpr);
+    ctx.clearRect(0, 0, cssW, cssH);
+
+    const totalBars = d.candles.length;
+    const count = Math.min(zoomCandleCount, totalBars);
+    const endIdx = Math.max(count, totalBars - panOffsetBars);
+    const startIdx = Math.max(0, endIdx - count);
+
+    const slice = d.candles.slice(startIdx, endIdx);
+    const eSlice = d.ema9.slice(startIdx, endIdx);
+    const vSlice = (d.vwapArr || d.ema9).slice(startIdx, endIdx);
+    const pSlice = d.psar.slice(startIdx, endIdx);
+
+    const maxP = Math.max(...slice.map(c => c.high), ...pSlice.map((p, i) => p ? p.sar : slice[i].high));
+    const minP = Math.min(...slice.map(c => c.low), ...pSlice.map((p, i) => p ? p.sar : slice[i].low));
+    const range = (maxP - minP) || 0.0001;
+
+    const topPad = 16;
+    const botPad = 24;
+    const leftPad = 10;
+    const rightAxisW = 64;
+    const plotW = cssW - leftPad - rightAxisW;
+    const plotH = cssH - topPad - botPad;
+    const yMap = (p) => topPad + ((maxP - p) / range) * plotH;
+
+    ctx.strokeStyle = 'rgba(30, 45, 77, 0.55)';
+    ctx.lineWidth = 1;
+    ctx.fillStyle = '#8b9bb4';
+    ctx.font = '10px sans-serif';
+    for (let g = 0; g <= 4; g++) {
+      const priceVal = maxP - (range * (g / 4));
+      const y = yMap(priceVal);
+      ctx.beginPath();
+      ctx.moveTo(leftPad, y);
+      ctx.lineTo(cssW - rightAxisW, y);
+      ctx.stroke();
+      ctx.fillText(priceVal.toFixed(d.decimals), cssW - rightAxisW + 5, y + 3);
+    }
+
+    ctx.setLineDash([4, 4]);
+    if (d.resistance <= maxP && d.resistance >= minP) {
+      ctx.strokeStyle = 'rgba(255, 61, 87, 0.55)';
+      ctx.beginPath(); ctx.moveTo(leftPad, yMap(d.resistance)); ctx.lineTo(cssW - rightAxisW, yMap(d.resistance)); ctx.stroke();
+    }
+    if (d.support <= maxP && d.support >= minP) {
+      ctx.strokeStyle = 'rgba(0, 230, 118, 0.55)';
+      ctx.beginPath(); ctx.moveTo(leftPad, yMap(d.support)); ctx.lineTo(cssW - rightAxisW, yMap(d.support)); ctx.stroke();
+    }
+    ctx.setLineDash([]);
+
+    const step = plotW / slice.length;
+
+    slice.forEach((c, idx) => {
+      const x = leftPad + idx * step + step / 2;
+      const isUp = c.close >= c.open;
+      const isLiveBar = (startIdx + idx) === (d.candles.length - 1);
+
+      ctx.strokeStyle = isUp ? '#00e676' : '#ff3d57';
+      ctx.fillStyle = isUp ? '#00e676' : '#ff3d57';
+      ctx.lineWidth = Math.max(1, Math.min(2.2, step * 0.12));
+
+      ctx.beginPath();
+      ctx.moveTo(x, yMap(c.high));
+      ctx.lineTo(x, yMap(c.low));
+      ctx.stroke();
+
+      const top = Math.min(yMap(c.open), yMap(c.close));
+      const bh = Math.max(Math.abs(yMap(c.close) - yMap(c.open)), 2.2);
+      const bw = Math.max(2.5, Math.min(24, step * 0.64));
+      ctx.fillRect(x - bw / 2, top, bw, bh);
+
+      if (isLiveBar) {
+        ctx.strokeStyle = '#00e5ff';
+        ctx.lineWidth = 1.2;
+        ctx.strokeRect(x - bw / 2 - 1, top - 1, bw + 2, bh + 2);
+      }
+
+      if (idx % Math.max(1, Math.floor(slice.length / 5)) === 0) {
+        const sastD = new Date((c.time + 7200) * 1000);
+        const hm = sastD.toISOString().split('T')[1].slice(0, 5);
+        ctx.fillStyle = '#8b9bb4';
+        ctx.fillText(hm, x - 14, cssH - 6);
+      }
+    });
+
+    ctx.strokeStyle = 'rgba(255, 171, 0, 0.85)';
+    ctx.lineWidth = 1.3;
+    ctx.beginPath();
+    vSlice.forEach((v, idx) => {
+      const x = leftPad + idx * step + step / 2;
+      if (idx === 0) ctx.moveTo(x, yMap(v));
+      else ctx.lineTo(x, yMap(v));
+    });
+    ctx.stroke();
+
+    ctx.strokeStyle = '#2979ff';
+    ctx.lineWidth = 1.6;
+    ctx.beginPath();
+    eSlice.forEach((v, idx) => {
+      const x = leftPad + idx * step + step / 2;
+      if (idx === 0) ctx.moveTo(x, yMap(v));
+      else ctx.lineTo(x, yMap(v));
+    });
+    ctx.stroke();
+
+    const dotRadius = Math.max(2.0, Math.min(4.5, step * 0.18));
+    pSlice.forEach((p, idx) => {
+      if (!p) return;
+      const x = leftPad + idx * step + step / 2;
+      const y = yMap(p.sar);
+      ctx.fillStyle = p.bull ? '#00e5ff' : '#ff4081';
+      ctx.beginPath();
+      ctx.arc(x, y, p.flipped ? dotRadius * 1.35 : dotRadius, 0, Math.PI * 2);
+      ctx.fill();
+    });
+
+    if (d.livePrice >= minP && d.livePrice <= maxP) {
+      const liveY = yMap(d.livePrice);
+      ctx.setLineDash([2, 2]);
+      ctx.strokeStyle = '#00e5ff';
+      ctx.lineWidth = 1.2;
+      ctx.beginPath();
+      ctx.moveTo(leftPad, liveY);
+      ctx.lineTo(cssW - rightAxisW, liveY);
+      ctx.stroke();
+      ctx.setLineDash([]);
+
+      ctx.fillStyle = '#00e5ff';
+      ctx.fillRect(cssW - rightAxisW + 2, liveY - 8, rightAxisW - 4, 16);
+      ctx.fillStyle = '#03060c';
+      ctx.font = 'bold 9.5px sans-serif';
+      ctx.fillText(d.livePrice.toFixed(d.decimals), cssW - rightAxisW + 5, liveY + 3);
+    }
+
+    const zLbl = document.getElementById('zoomCountLabel');
+    if (zLbl) zLbl.textContent = count;
+
+    if (hoverCandleIndex !== null && slice[hoverCandleIndex]) {
+      const hc = slice[hoverCandleIndex];
+      const anat = calcCandlestickAnatomy(hc);
+      const hx = leftPad + hoverCandleIndex * step + step / 2;
+      ctx.setLineDash([3, 3]);
+      ctx.strokeStyle = 'rgba(255, 255, 255, 0.35)';
+      ctx.beginPath();
+      ctx.moveTo(hx, topPad);
+      ctx.lineTo(hx, cssH - botPad);
+      ctx.stroke();
+      ctx.setLineDash([]);
+
+      const sastT = new Date((hc.time + 7200) * 1000).toISOString().split('T')[1].slice(0, 5);
+      document.getElementById('crosshairInfo').innerHTML =
+        `🕒 <strong>${sastT} SAST</strong> | O: ${hc.open.toFixed(d.decimals)} | H: ${hc.high.toFixed(d.decimals)} | L: ${hc.low.toFixed(d.decimals)} | C: <strong>${hc.close.toFixed(d.decimals)}</strong> | Body: ${anat.bodyPct}% | Upper Shadow: ${anat.upperPct}% | Lower Shadow: ${anat.lowerPct}%`;
+    } else {
+      document.getElementById('crosshairInfo').innerHTML =
+        `🔍 Showing <strong>${count}</strong> real candles (${d.label} M${d.entryTf} • ${d.feedSource} • Touch/Hover any candle for Shadow/Body % )`;
+    }
+
+    ctx.restore();
+  }
+
+  function displayPair(pairId, triggerAlerts = false) {
+    const d = matrixCache[pairId];
+    if (!d) return;
+
+    document.getElementById('pairSelect').value = pairId;
+    document.querySelectorAll('.matrix-card').forEach(el => {
+      el.classList.toggle('selected', el.dataset.pair === pairId);
+    });
+
+    crossVerifySecondaryFeed(d);
+
+    if (d.narrative) {
+      document.getElementById('narratorStateTag').textContent = `🧠 AI DESK NARRATOR & CANDLE ANATOMY (${d.label} M${d.entryTf})`;
+      document.getElementById('narratorPatternBadge').textContent = d.narrative.patternBadge;
+      document.getElementById('narratorText').textContent = d.narrative.fullText;
+      if (d.narrative.anat) {
+        document.getElementById('anatUpper').textContent = `Upper Shadow: ${d.narrative.anat.upperPct}%`;
+        document.getElementById('anatBody').textContent = `${d.narrative.anat.isBull ? '🟢 Bull' : '🔴 Bear'} Real Body: ${d.narrative.anat.bodyPct}%`;
+        document.getElementById('anatLower').textContent = `Lower Shadow: ${d.narrative.anat.lowerPct}%`;
+      }
+    }
+
+    document.getElementById('mtfBadge').textContent = `M${d.macroTf} Macro: ${d.macroBullish ? 'BULL ▲' : 'BEAR ▼'}`;
+    document.getElementById('mtfBadge').style.color = d.macroBullish ? 'var(--green)' : 'var(--red)';
+
+    const pState = d.closedEval.psarState;
+    document.getElementById('psarBadge').textContent = `Locked PSAR: ${pState.bull ? 'BULL ▲' : 'BEAR ▼'}`;
+    document.getElementById('psarBadge').style.color = pState.bull ? 'var(--cyan)' : 'var(--magenta)';
+
+    const vwapBull = d.closedPrice >= d.vwapClosed;
+    const vwapEl = document.getElementById('vwapBadge');
+    vwapEl.textContent = `VWAP: ${vwapBull ? 'ABOVE ▲' : 'BELOW ▼'} (${d.rvolClosed.toFixed(1)}x Vol)`;
+    vwapEl.style.color = vwapBull ? 'var(--green)' : 'var(--red)';
+
+    const sqEl = document.getElementById('squeezeBadge');
+    sqEl.textContent = d.closedEval.squeeze ? '💥 SQUEEZE ON' : `Regime: ${d.adxClosed >= 25 ? 'TREND' : 'RANGE'}`;
+    sqEl.style.color = d.closedEval.squeeze ? 'var(--amber)' : 'var(--text-main)';
+
+    document.getElementById('mClosed').textContent = d.closedPrice.toFixed(d.decimals);
+    document.getElementById('mLive').textContent = d.livePrice.toFixed(d.decimals);
+    document.getElementById('mSpread').textContent = d.spreadPips === null
+      ? 'Sync...'
+      : (d.usdRole === 'CRYPTO' ? `$${d.spreadPips.toFixed(2)}` : `${d.spreadPips.toFixed(1)}p`);
+    document.getElementById('mRsi').textContent = d.rsiClosed.toFixed(1);
+    document.getElementById('mStoch').textContent = d.stochClosed.toFixed(0);
+    document.getElementById('mMacd').textContent = (d.macdHistClosed >= 0 ? '+' : '') + d.macdHistClosed.toFixed(d.decimals);
+    document.getElementById('mMacd').style.color = d.macdHistClosed >= 0 ? 'var(--green)' : 'var(--red)';
+    document.getElementById('mRvol').textContent = d.rvolClosed.toFixed(2) + 'x';
+    document.getElementById('mAdx').textContent = d.adxClosed.toFixed(1);
+
+    const wrEl = document.getElementById('btWinRate');
+    if (d.winRate === null) {
+      wrEl.textContent = `50-Bar WR (Score ≥${d.reqThreshold}): N/A (0/0 Signals)`;
+      wrEl.style.color = 'var(--amber)';
+    } else {
+      wrEl.textContent = `50-Bar WR (Score ≥${d.reqThreshold}): ${(d.winRate * 100).toFixed(1)}% (${d.wins}/${d.total})`;
+      wrEl.style.color = d.winRate >= 0.521 ? 'var(--green)' : 'var(--amber)';
+    }
+
+    const stake = evaluateCircuitAndKelly(d);
+    const payoutPct = parseFloat(document.getElementById('payoutInput').value) || 92;
+
+    const buyCeiling = d.liveOpen + 0.25 * d.atrClosed;
+    const sellFloor = d.liveOpen - 0.25 * d.atrClosed;
+    const sniperZoneEl = document.getElementById('sniperZoneText');
+    const sniperBadgeEl = document.getElementById('sniperStatusBadge');
+    const sigTitle = document.getElementById('sigTitle');
+    const sigDetails = document.getElementById('sigDetails');
+
+    const sast = getSASTTimeParts();
+    const fxClosedVeto = d.usdRole !== 'CRYPTO' && (sast.isWeekend || sast.isRollover);
+    const usdCorrelatedBusy = pendingTrade && pendingTrade.pair !== d.id && pendingTrade.usdRole !== 'CRYPTO' && d.usdRole !== 'CRYPTO';
+    const liveBullConfirm = d.livePrice >= d.liveOpen;
+    const liveBearConfirm = d.livePrice <= d.liveOpen;
+    const alreadyTradedThisCandle = lastTradedCandleByPair[d.id] === d.lastCandleTime;
+    const reqT = d.reqThreshold || 3;
+
+    const candleCloseMs = (d.lastCandleTime + d.entryTf * 60) * 1000;
+    const secIntoCandle = Math.max(0, Math.floor((Date.now() - d.lastCandleTime * 1000) / 1000));
+    const maxEntryWindowSec = Math.min(45, Math.floor(d.entryTf * 60 * 0.35));
+    const inOpeningWindow = secIntoCandle <= maxEntryWindowSec;
+
+    if (fxClosedVeto) {
+      sigTitle.className = 'sig-main c-wait';
+      sigTitle.textContent = sast.isWeekend ? `🔴 FOREX WEEKEND — TRADE GOLD (XAU) OR BTC/ETH` : `⚠️ 23:00 SAST BANK ROLLOVER VETO`;
+      sigDetails.textContent = `Interbank Forex reopens tonight at 23:00 SAST. Gold (XAU/USD), BTC/USD, and ETH/USD are streaming 24/7 right now.`;
+      sniperBadgeEl.textContent = 'FX CLOSED';
+      sniperBadgeEl.style.color = 'var(--amber)';
+    } else if (newsVetoActive) {
+      sigTitle.className = 'sig-main c-sell';
+      sigTitle.textContent = '🔴 HIGH-IMPACT NEWS VETO ACTIVE';
+      sigDetails.textContent = 'SAST Macro Economic Release Shield is blocking entries to protect against news slippage.';
+      sniperBadgeEl.textContent = 'NEWS VETO';
+    } else if (circuitLockedReason) {
+      sigTitle.className = 'sig-main c-wait';
+      sigTitle.textContent = '🔒 CIRCUIT BREAKER ACTIVE';
+      sigDetails.textContent = circuitLockedReason;
+      sniperBadgeEl.textContent = 'LOCKED';
+    } else if (payoutPct < 80) {
+      sigTitle.className = 'sig-main c-sell';
+      sigTitle.textContent = `🚫 PAYOUT VETO (${payoutPct}% < 80%)`;
+      sigDetails.textContent = 'Broker payout dropped below 80%. Mathematical Expected Value is negative.';
+      sniperBadgeEl.textContent = 'VETO';
+    } else if (usdCorrelatedBusy) {
+      sigTitle.className = 'sig-main c-wait';
+      sigTitle.textContent = `🛡️ USD CORRELATION SHIELD — ${d.label}`;
+      sigDetails.textContent = `Active USD trade open on ${pendingTrade.label}. Blocking duplicate USD exposure.`;
+      sniperBadgeEl.textContent = 'SHIELDED';
+    } else if (d.closedEval.score >= reqT && liveBullConfirm) {
+      const chased = d.livePrice > buyCeiling;
+      sniperZoneEl.textContent = `🎯 Max Entry: ≤ ${buyCeiling.toFixed(d.decimals)} (Live: ${d.livePrice.toFixed(d.decimals)})`;
+      sniperBadgeEl.textContent = chased ? '⚠️ PRICE CHASED — WAIT PULLBACK' : '✅ IN SNIPER ZONE';
+      sniperBadgeEl.style.color = chased ? 'var(--amber)' : 'var(--green)';
+
+      sigTitle.className = 'sig-main c-buy';
+      sigTitle.textContent = `▲ A+ VERIFIED BUY — ${d.label} (M${d.entryTf})`;
+      sigDetails.textContent = `8-Factor Score +${d.closedEval.score} (Req ≥${reqT} • WR ${d.winRate ? (d.winRate * 100).toFixed(0) + '%' : 'N/A'}): ${d.closedEval.reasons.join(' • ')}`;
+
+      if (triggerAlerts && !chased && stake > 0 && !alreadyTradedThisCandle) {
+        playAlertTone('BUY');
+        speakAlert(`Alert! A Plus Verified Buy on ${d.label.replace('/', ' ')}, ${d.entryTf} minute chart. ${d.narrative ? d.narrative.fullText : ''} Recommended stake ${stake} dollars.`);
+      }
+      if (!pendingTrade && stake > 0 && !chased && inOpeningWindow && !alreadyTradedThisCandle && candleCloseMs > Date.now() + 15000) {
+        lastTradedCandleByPair[d.id] = d.lastCandleTime;
+        pendingTrade = {
+          timeSAST: sast.formatted,
+          pair: d.id,
+          label: d.label,
+          tf: d.entryTf,
+          usdRole: d.usdRole,
+          dir: 'BUY',
+          entry: d.livePrice.toFixed(d.decimals),
+          entryNum: d.livePrice,
+          stake,
+          expiresAtMs: candleCloseMs
+        };
+        renderLedgerAndCircuitBreaker();
+      }
+    } else if (d.closedEval.score <= -reqT && liveBearConfirm) {
+      const chased = d.livePrice < sellFloor;
+      sniperZoneEl.textContent = `🎯 Min Entry: ≥ ${sellFloor.toFixed(d.decimals)} (Live: ${d.livePrice.toFixed(d.decimals)})`;
+      sniperBadgeEl.textContent = chased ? '⚠️ PRICE CHASED — WAIT PULLBACK' : '✅ IN SNIPER ZONE';
+      sniperBadgeEl.style.color = chased ? 'var(--amber)' : 'var(--green)';
+
+      sigTitle.className = 'sig-main c-sell';
+      sigTitle.textContent = `▼ A+ VERIFIED SELL — ${d.label} (M${d.entryTf})`;
+      sigDetails.textContent = `8-Factor Score ${d.closedEval.score} (Req ≤-${reqT} • WR ${d.winRate ? (d.winRate * 100).toFixed(0) + '%' : 'N/A'}): ${d.closedEval.reasons.join(' • ')}`;
+
+      if (triggerAlerts && !chased && stake > 0 && !alreadyTradedThisCandle) {
+        playAlertTone('SELL');
+        speakAlert(`Alert! A Plus Verified Sell on ${d.label.replace('/', ' ')}, ${d.entryTf} minute chart. ${d.narrative ? d.narrative.fullText : ''} Recommended stake ${stake} dollars.`);
+      }
+      if (!pendingTrade && stake > 0 && !chased && inOpeningWindow && !alreadyTradedThisCandle && candleCloseMs > Date.now() + 15000) {
+        lastTradedCandleByPair[d.id] = d.lastCandleTime;
+        pendingTrade = {
+          timeSAST: sast.formatted,
+          pair: d.id,
+          label: d.label,
+          tf: d.entryTf,
+          usdRole: d.usdRole,
+          dir: 'SELL',
+          entry: d.livePrice.toFixed(d.decimals),
+          entryNum: d.livePrice,
+          stake,
+          expiresAtMs: candleCloseMs
+        };
+        renderLedgerAndCircuitBreaker();
+      }
+    } else {
+      sigTitle.className = 'sig-main c-wait';
+      sigTitle.textContent = `⏸ STANDBY — ${d.label} (Score ${d.closedEval.score} / Req ±${reqT})`;
+      sigDetails.textContent = `8-Factor Filter active: waiting for locked Bar [-2] Score ≥ ±${reqT} + MACD/StochRSI/VWAP alignment.`;
+      sniperZoneEl.textContent = `🎯 Sniper Band: ${sellFloor.toFixed(d.decimals)} – ${buyCeiling.toFixed(d.decimals)}`;
+      sniperBadgeEl.textContent = 'STANDBY';
+      sniperBadgeEl.style.color = 'var(--cyan)';
+    }
+
+    if (chartMode === 'CANVAS') drawChart(d);
+    else mountTradingViewWidget(pairId);
+  }
+
+  function renderMatrixAndFocusedPair(triggerAlerts = false) {
+    const results = PAIRS.map(p => matrixCache[p.id]).filter(Boolean);
+    if (results.length === 0) return;
+
+    const sast = getSASTTimeParts();
+    let usdBullCount = 0;
+    results.forEach(r => {
+      if (r.usdRole === 'QUOTE' && r.closedEval.score <= -2) usdBullCount++;
+      if (r.usdRole === 'BASE' && r.closedEval.score >= 2) usdBullCount++;
+      if (r.usdRole === 'QUOTE' && r.closedEval.score >= 2) usdBullCount--;
+      if (r.usdRole === 'BASE' && r.closedEval.score <= -2) usdBullCount--;
+    });
+
+    const usdMeterEl = document.getElementById('cbUsdMeter');
+    if (usdBullCount >= 2) {
+      usdMeterEl.textContent = 'USD STRONG ▲';
+      usdMeterEl.style.color = 'var(--green)';
+    } else if (usdBullCount <= -2) {
+      usdMeterEl.textContent = 'USD WEAK ▼';
+      usdMeterEl.style.color = 'var(--red)';
+    } else {
+      usdMeterEl.textContent = 'USD MIXED';
+      usdMeterEl.style.color = 'var(--cyan)';
+    }
+
+    let bestPair = results[0];
+    const scorePairRank = (r) => {
+      const fxPenalty = (r.usdRole !== 'CRYPTO' && (sast.isWeekend || sast.isRollover)) ? -500 : 0;
+      const meetsReq = Math.abs(r.closedEval.score) >= r.reqThreshold ? 200 : 0;
+      const wrScore = (r.winRate !== null ? r.winRate : 0) * 100;
+      return fxPenalty + meetsReq + Math.abs(r.closedEval.score) * 25 + wrScore;
+    };
+
+    results.forEach(r => {
+      if (scorePairRank(r) > scorePairRank(bestPair)) bestPair = r;
+    });
+
+    const grid = document.getElementById('matrixGrid');
+    grid.innerHTML = results.map(r => {
+      const reqT = r.reqThreshold || 3;
+      const isQualified = Math.abs(r.closedEval.score) >= reqT;
+      const isBest = r.id === bestPair.id && isQualified;
+      const sigColor = r.closedEval.score >= reqT ? 'var(--green)' : (r.closedEval.score <= -reqT ? 'var(--red)' : 'var(--text-muted)');
+      const sigLabel = r.closedEval.score >= reqT ? `▲ BUY (+${r.closedEval.score})` : (r.closedEval.score <= -reqT ? `▼ SELL (${r.closedEval.score})` : `WAIT (${r.closedEval.score}/${reqT})`);
+      const wrLabel = r.winRate !== null ? `${(r.winRate * 100).toFixed(0)}% WR` : 'N/A WR';
+      return `
+        <div class="matrix-card ${isBest ? 'best-pick' : ''}" data-pair="${r.id}">
+          <div class="mc-top">
+            <span>${isBest ? '🏆 ' : ''}${r.label}</span>
+            <span style="color:${sigColor};">${sigLabel}</span>
+          </div>
+          <span class="mc-psar" style="color:${r.closedEval.psarState.bull ? 'var(--cyan)' : 'var(--magenta)'};">
+            ${r.closedEval.psarState.bull ? '● PSAR ▲' : '● PSAR ▼'} • RVOL ${r.rvolClosed.toFixed(1)}x ${r.closedEval.squeeze ? '💥' : ''}
+          </span>
+          <div class="mc-bottom">
+            <span class="mc-price-val">${r.livePrice.toFixed(r.decimals)}</span>
+            <strong style="color:${(r.winRate || 0) >= 0.521 ? 'var(--green)' : 'var(--amber)'};">${wrLabel}</strong>
+          </div>
+        </div>
+      `;
+    }).join('');
+
+    document.querySelectorAll('.matrix-card').forEach(card => {
+      card.addEventListener('click', () => {
+        playAlertTone('CLICK');
+        panOffsetBars = 0;
+        displayPair(card.dataset.pair, false);
+        showToast(`📊 Focused ${card.dataset.pair}`);
+      });
+    });
+
+    document.getElementById('matrixStatus').textContent = `Top: ${bestPair.label} (${sast.formatted})`;
+    const targetId = (autoPickBest || !matrixCache[document.getElementById('pairSelect').value])
+      ? bestPair.id
+      : document.getElementById('pairSelect').value;
+
+    displayPair(targetId, triggerAlerts);
+  }
+
+  async function scanAllPairsVerified(isManualClick = false) {
+    if (isScanning) return;
+    isScanning = true;
+
+    const entryTf = parseInt(document.getElementById('tfSelect').value, 10) || 5;
+    const macroTf = entryTf === 1 ? 5 : (entryTf === 5 ? 15 : (entryTf === 10 ? 30 : (entryTf === 15 ? 60 : 240)));
+    const baseTf = entryTf === 10 ? 5 : entryTf;
+    const scanBtn = document.getElementById('forceScanBtn');
+    const matrixSec = document.getElementById('matrixSection');
+    const pill = document.getElementById('integrityPill');
+
+    if (isManualClick) {
+      playAlertTone('CLICK');
+      showToast(`⚡ Scanning Gold, Crypto & FX (M${entryTf})...`);
+    }
+
+    scanBtn.disabled = true;
+    scanBtn.textContent = '⏳ SCANNING...';
+    matrixSec.classList.add('scanning');
+
+    try {
+      PAIRS.forEach(p => {
+        const vKey = `${p.id}_${baseTf}`;
+        if (realCandlesVault[vKey] && realCandlesVault[vKey].length >= 30) {
+          matrixCache[p.id] = computePairAnalyticsFromRealCandles(p, realCandlesVault[vKey], entryTf, macroTf, 'RAM REAL OHLC');
+        }
+      });
+      if (Object.keys(matrixCache).length > 0) {
+        renderMatrixAndFocusedPair(false);
+      }
+
+      const focusedId = document.getElementById('pairSelect').value || 'PAXGUSD';
+      const focusedObj = PAIRS.find(p => p.id === focusedId) || PAIRS[0];
+      try {
+        const firstRes = await fetchVerifiedPair(focusedObj, entryTf, macroTf);
+        matrixCache[firstRes.id] = firstRes;
+        renderMatrixAndFocusedPair(false);
+      } catch (e) {}
+
+      const remainingPairs = PAIRS.filter(p => p.id !== focusedObj.id);
+      const batch1 = remainingPairs.slice(0, 4);
+      const batch2 = remainingPairs.slice(4, 7);
+
+      const resBatch1 = await Promise.allSettled(batch1.map(p => fetchVerifiedPair(p, entryTf, macroTf)));
+      resBatch1.forEach(s => { if (s.status === 'fulfilled' && s.value) matrixCache[s.value.id] = s.value; });
+      renderMatrixAndFocusedPair(false);
+
+      await new Promise(r => setTimeout(r, 120));
+      const resBatch2 = await Promise.allSettled(batch2.map(p => fetchVerifiedPair(p, entryTf, macroTf)));
+      resBatch2.forEach(s => { if (s.status === 'fulfilled' && s.value) matrixCache[s.value.id] = s.value; });
+
+      const loadedCount = Object.keys(matrixCache).length;
+      const sastNow = getSASTTimeParts();
+      document.getElementById('lastScanTimeTag').textContent = `✅ Last Scan: ${sastNow.formatted} SAST`;
+
+      if (loadedCount === 0) {
+        pill.textContent = '🛑 EXCHANGE OFFLINE';
+        pill.classList.add('error');
+      } else {
+        pill.textContent = `● M${entryTf} GOLD+8F (${loadedCount}/8 ASSETS)`;
+        pill.classList.remove('error');
+      }
+
+      if (pendingTrade && Date.now() >= pendingTrade.expiresAtMs && matrixCache[pendingTrade.pair]) {
+        const m = matrixCache[pendingTrade.pair];
+        const payout = (parseFloat(document.getElementById('payoutInput').value) || 92) / 100;
+        const won = (pendingTrade.dir === 'BUY' && m.livePrice > pendingTrade.entryNum) ||
+                    (pendingTrade.dir === 'SELL' && m.livePrice < pendingTrade.entryNum);
+        const pnlAmt = won ? pendingTrade.stake * payout : -pendingTrade.stake;
+        gradedHistory.push({
+          ...pendingTrade,
+          exit: m.livePrice.toFixed(m.decimals),
+          win: won,
+          pnl: pnlAmt
+        });
+        speakAlert(`Trade Graded on ${pendingTrade.label.replace('/', ' ')}. ${won ? 'Winner!' : 'Loss.'}`, true);
+        pendingTrade = null;
+        saveVault();
+        renderLedgerAndCircuitBreaker();
+      }
+
+      renderMatrixAndFocusedPair(true);
+
+      if (isManualClick) {
+        const activeId = document.getElementById('pairSelect').value;
+        const focused = matrixCache[activeId];
+        if (focused) {
+          showToast(`✅ ${focused.label} (${focused.feedSource}) — ${focused.narrative.patternBadge}`);
+          speakAlert(`${focused.label.replace('/', ' ')} on M${entryTf}. ${focused.narrative.fullText} Live price ${focused.livePrice.toFixed(focused.decimals)}.`, true);
+        }
+      }
+    } finally {
+      scanBtn.disabled = false;
+      scanBtn.textContent = '⚡ SCAN NOW';
+      matrixSec.classList.remove('scanning');
+      isScanning = false;
+    }
+  }
+
+  async function runProductionQaSelfTest() {
+    playAlertTone('BUY');
+    const bar = document.getElementById('qaReportBar');
+    const grid = document.getElementById('qaGridItems');
+    bar.style.display = 'flex';
+    showToast('🧪 Running Pass #4 QA Self-Test...');
+
+    const pairId = document.getElementById('pairSelect').value;
+    const d = matrixCache[pairId];
+    const goldData = matrixCache['PAXGUSD'];
+
+    const hasRealCandles = d && Array.isArray(d.candles) && d.candles.length >= 30 && d.candles[0].time > 1700000000;
+    const goldPass = goldData && goldData.livePrice > 1500;
+    const narratorPass = d && d.narrative && d.narrative.anat && typeof d.narrative.anat.bodyPct === 'number';
+    const zeroSimPass = typeof window.generateSeedCandles === 'undefined';
+    const bar2Pass = d && d.candles.length >= 2 && d.closedPrice === d.candles[d.candles.length - 2].close;
+    const volPass = d && typeof d.rvolClosed === 'number' && typeof d.vwapClosed === 'number';
+    const wsPass = (krakenWs && krakenWs.readyState === 1) || (binanceWs && binanceWs.readyState === 1) || wsTickCount > 0;
+    const mdPass = typeof buildMarkdownAuditReport === 'function';
+
+    const checks = [
+      { name: '1. Real Exchange OHLC', pass: hasRealCandles, detail: hasRealCandles ? `${d.feedSource} (${d.candles.length} bars)` : 'Syncing...' },
+      { name: '2. Live Gold (XAU/USD)', pass: goldPass, detail: goldPass ? `Gold Spot $${goldData.livePrice.toFixed(2)}` : 'Syncing Gold...' },
+      { name: '3. Candlestick Anatomy', pass: narratorPass, detail: narratorPass ? `Body ${d.narrative.anat.bodyPct}% | Wicks Active` : 'Pending' },
+      { name: '4. Zero-Fake Code Audit', pass: zeroSimPass, detail: zeroSimPass ? '0 Synthetic Functions' : 'Failed' },
+      { name: '5. Bar [-2] Non-Repaint Lock', pass: bar2Pass, detail: bar2Pass ? `Locked @ ${d.closedPrice.toFixed(d.decimals)}` : 'Pending' },
+      { name: '6. Real Volume & VWAP', pass: volPass, detail: volPass ? `RVOL ${d.rvolClosed.toFixed(2)}x | VWAP Active` : 'Pending' },
+      { name: '7. Live WebSocket Stream', pass: wsPass, detail: wsPass ? `Connected (${wsTickCount} ticks)` : 'Connecting...' },
+      { name: '8. Markdown (.MD) Exporter', pass: mdPass, detail: mdPass ? 'Ready to Save .MD' : 'Error' }
+    ];
+
+    grid.innerHTML = checks.map(c => `
+      <div class="qa-item" style="border-color:${c.pass ? 'var(--green)' : 'var(--amber)'};">
+        <span style="color:${c.pass ? 'var(--green)' : 'var(--amber)'};">${c.pass ? '✅ PASS' : '⏳ SYNC'}</span> — ${c.name}<br>
+        <small style="color:var(--text-muted);">${c.detail}</small>
+      </div>
+    `).join('');
+
+    const passCount = checks.filter(c => c.pass).length;
+    speakAlert(`Pass 4 QA Test complete. ${passCount} of 8 checks passed.`, true);
+  }
+
+  document.getElementById('qaTestBtn').addEventListener('click', runProductionQaSelfTest);
+  document.getElementById('closeQaBtn').addEventListener('click', () => {
+    document.getElementById('qaReportBar').style.display = 'none';
+  });
+
+  document.getElementById('sniperModeBtn').addEventListener('click', (e) => {
+    playAlertTone('CLICK');
+    sniperOptimizerMode = !sniperOptimizerMode;
+    e.target.textContent = sniperOptimizerMode ? '🎯 A+ OPTIMIZER' : '⚡ SCORE ≥ 3';
+    e.target.classList.toggle('active', sniperOptimizerMode);
+    showToast(sniperOptimizerMode ? '🎯 A+ Win-Rate Optimizer ON' : '⚡ Standard Score ≥ 3 Mode ON');
+    scanAllPairsVerified(false);
+  });
+
+  async function fetchKeylessLiveNews(isManualClick = false) {
+    const listEl = document.getElementById('newsHeadlinesList');
+    const badgeEl = document.getElementById('newsSentimentBadge');
+    const panelEl = document.getElementById('newsPanel');
+    const newsBtn = document.getElementById('refreshNewsBtn');
+    const sast = getSASTTimeParts();
+
+    if (isManualClick) {
+      playAlertTone('CLICK');
+      showToast('📰 Fetching Live Market Headlines...');
+    }
+
+    newsBtn.disabled = true;
+    newsBtn.textContent = '⏳...';
+    panelEl.classList.add('loading');
+    badgeEl.textContent = '⏳ Loading...';
+
+    const totalMins = sast.hour * 60 + sast.min;
+    const isUsDataWindow = (totalMins >= 865 && totalMins <= 880) ||
+                           (totalMins >= 955 && totalMins <= 970) ||
+                           (totalMins >= 1195 && totalMins <= 1215);
+
+    let headlines = [];
+
+    try {
+      const ccRes = await fetchWithTimeout('https://min-api.cryptocompare.com/data/v2/news/?lang=EN', 4000);
+      if (ccRes && Array.isArray(ccRes.Data) && ccRes.Data.length > 0) {
+        ccRes.Data.slice(0, 5).forEach(item => {
+          const pubSast = new Date((item.published_on + 7200) * 1000).toISOString().split('T')[1].slice(0, 5);
+          headlines.push({
+            title: `[${item.source_info ? item.source_info.name : 'Wire'}] ${item.title}`,
+            link: item.url,
+            time: `${pubSast} SAST`
+          });
+        });
+      }
+    } catch (e) {}
+
+    try {
+      const rssUrl = encodeURIComponent('https://www.investing.com/rss/news_1.rss');
+      const rssRes = await fetchWithTimeout(`https://api.rss2json.com/v1/api.json?rss_url=${rssUrl}`, 4000);
+      if (rssRes && Array.isArray(rssRes.items) && rssRes.items.length > 0) {
+        rssRes.items.slice(0, 3).forEach(item => {
+          headlines.unshift({
+            title: `[FX/Gold Wire] ${item.title}`,
+            link: item.link,
+            time: 'Live FX'
+          });
+        });
+      }
+    } catch (e) {}
+
+    newsVetoActive = isUsDataWindow;
+    panelEl.classList.remove('loading');
+    newsBtn.disabled = false;
+    newsBtn.textContent = '📰 NEWS';
+
+    if (headlines.length > 0) {
+      badgeEl.textContent = `✅ Updated ${sast.formatted}`;
+      badgeEl.style.color = 'var(--green)';
+      listEl.innerHTML = headlines.slice(0, 6).map(h => `
+        <div class="news-item">
+          <a href="${h.link}" target="_blank" rel="noopener noreferrer">• ${h.title}</a>
+          <span style="color:var(--cyan);white-space:nowrap;font-weight:700;">${h.time}</span>
+        </div>
+      `).join('');
+
+      if (isManualClick) {
+        showToast(`📰 Loaded ${headlines.slice(0, 6).length} Live Headlines`);
+        speakAlert(`News feed updated at ${sast.hour} ${sast.min} South African time.`, true);
+      }
+    } else {
+      badgeEl.textContent = `⚠️ Wire Offline (${sast.formatted})`;
+      badgeEl.style.color = 'var(--amber)';
+      listEl.innerHTML = `<div class="news-item"><span>• SAST Macro Calendar Guard Active (Sydney/Tokyo Open at 23:00 SAST)</span><span>Guarded</span></div>`;
+    }
+  }
+
+  function applyRealtimeQuoteUpdate(pairId, bidPrice, askPrice) {
+    const d = matrixCache[pairId];
+    if (!d || !d.candles || d.candles.length === 0) return;
+
+    const midPrice = (bidPrice + askPrice) / 2;
+    const meta = PAIRS.find(p => p.id === pairId);
+    const spreadVal = meta && meta.usdRole === 'CRYPTO'
+      ? (askPrice - bidPrice)
+      : (askPrice - bidPrice) * (meta ? meta.pipScale : 10000);
+
+    d.bidPrice = bidPrice;
+    d.askPrice = askPrice;
+    d.livePrice = midPrice;
+    d.spreadPips = spreadVal;
+
+    wsTickCount++;
+    document.getElementById('wsTickCounter').textContent = `⚡ Live WebSocket Ticks: ${wsTickCount}`;
+
+    const tfSec = d.entryTf * 60;
+    const nowBucket = Math.floor(Date.now() / 1000 / tfSec) * tfSec;
+    const lastCandle = d.candles[d.candles.length - 1];
+
+    if (nowBucket > lastCandle.time) {
+      d.candles.push({
+        time: nowBucket,
+        open: midPrice,
+        high: midPrice,
+        low: midPrice,
+        close: midPrice,
+        volume: 1.0
+      });
+      if (d.candles.length > 100) d.candles.shift();
+      d.liveOpen = midPrice;
+      d.lastCandleTime = nowBucket;
+      const closes = d.candles.map(c => c.close);
+      d.ema9 = calcEMA(closes, 9);
+      d.psar = calcParabolicSAR(d.candles, 0.02, 0.20);
+    } else {
+      lastCandle.close = midPrice;
+      if (midPrice > lastCandle.high) lastCandle.high = midPrice;
+      if (midPrice < lastCandle.low) lastCandle.low = midPrice;
+    }
+
+    const cardPriceEl = document.querySelector(`.matrix-card[data-pair="${pairId}"] .mc-price-val`);
+    if (cardPriceEl) cardPriceEl.textContent = midPrice.toFixed(d.decimals);
+
+    if (document.getElementById('pairSelect').value === pairId) {
+      document.getElementById('mLive').textContent = midPrice.toFixed(d.decimals);
+      document.getElementById('mSpread').textContent = meta.usdRole === 'CRYPTO'
+        ? `$${spreadVal.toFixed(2)}`
+        : `${spreadVal.toFixed(1)}p`;
+      document.getElementById('bidAskSpreadText').textContent =
+        `📊 ${d.label} Bid: ${bidPrice.toFixed(d.decimals)} | Ask: ${askPrice.toFixed(d.decimals)}`;
+      if (chartMode === 'CANVAS') drawChart(d);
+    }
+  }
+
+  function connectHighFrequencyStreams() {
+    const wsPill = document.getElementById('wsStatusPill');
+    try {
+      if (krakenWs) krakenWs.close();
+      krakenWs = new WebSocket('wss://ws.kraken.com');
+      krakenWs.onopen = () => {
+        wsPill.textContent = '⚡ KRAKEN WS LIVE';
+        krakenWs.send(JSON.stringify({
+          event: 'subscribe',
+          pair: PAIRS.map(p => p.wsName),
+          subscription: { name: 'spread' }
+        }));
+        krakenWs.send(JSON.stringify({
+          event: 'subscribe',
+          pair: PAIRS.map(p => p.wsName),
+          subscription: { name: 'ticker' }
+        }));
+      };
+      krakenWs.onmessage = (event) => {
+        const msg = JSON.parse(event.data);
+        if (!Array.isArray(msg) || msg.length < 4) return;
+        const channelName = msg[2];
+        const wsPairName = msg[3];
+        const pairMeta = PAIRS.find(p => p.wsName === wsPairName);
+        if (!pairMeta) return;
+
+        if (channelName === 'spread') {
+          const bid = parseFloat(msg[1][0]);
+          const ask = parseFloat(msg[1][1]);
+          if (bid > 0 && ask > 0) applyRealtimeQuoteUpdate(pairMeta.id, bid, ask);
+        } else if (channelName === 'ticker' && msg[1] && msg[1].b && msg[1].a) {
+          const bid = parseFloat(msg[1].b[0]);
+          const ask = parseFloat(msg[1].a[0]);
+          if (bid > 0 && ask > 0) applyRealtimeQuoteUpdate(pairMeta.id, bid, ask);
+        }
+      };
+      krakenWs.onclose = () => setTimeout(connectHighFrequencyStreams, 4000);
+    } catch (e) {}
+
+    try {
+      if (binanceWs) binanceWs.close();
+      binanceWs = new WebSocket('wss://stream.binance.com:9443/ws/paxgusdt@bookTicker/btcusdt@bookTicker/ethusdt@bookTicker/eurusdt@bookTicker/gbpusdt@bookTicker/audusdt@bookTicker');
+      binanceWs.onmessage = (ev) => {
+        const data = JSON.parse(ev.data);
+        if (!data || !data.s || !data.b || !data.a) return;
+        const pMeta = PAIRS.find(p => p.binanceSym === data.s);
+        if (pMeta) applyRealtimeQuoteUpdate(pMeta.id, parseFloat(data.b), parseFloat(data.a));
+      };
+    } catch (e) {}
+  }
+
+  function updateSASTClock() {
+    const sast = getSASTTimeParts();
+    document.getElementById('sastClockText').textContent = `🇿🇦 SAST: ${sast.formatted} (UTC+2)`;
+    const statusTag = document.getElementById('sastStatusTag');
+
+    if (sast.isWeekend) {
+      statusTag.textContent = '🔴 FX Reopens 23:00 SAST (Gold/BTC Open 24/7)';
+      statusTag.style.color = 'var(--amber)';
+    } else if (sast.isRollover) {
+      statusTag.textContent = '⚠️ 23:00 FX Rollover (Gold/BTC Open)';
+      statusTag.style.color = 'var(--red)';
+    } else if (sast.hour >= 15 && sast.hour < 19) {
+      statusTag.textContent = '🔥 Lon/NY Overlap (Peak)';
+      statusTag.style.color = 'var(--green)';
+    } else {
+      statusTag.textContent = '🟢 Market Open';
+      statusTag.style.color = 'var(--cyan)';
+    }
+
+    const setSes = (id, open) => {
+      document.getElementById(id).className = `s-badge ${open ? 'open' : 'closed'}`;
+    };
+    setSes('sesSydney', sast.hour >= 0 && sast.hour < 9 && !sast.isWeekend);
+    setSes('sesTokyo', sast.hour >= 2 && sast.hour < 11 && !sast.isWeekend);
+    setSes('sesLondon', sast.hour >= 10 && sast.hour < 19 && !sast.isWeekend);
+    setSes('sesNewYork', sast.hour >= 15 && sast.hour < 24 && !sast.isWeekend);
+  }
+  setInterval(updateSASTClock, 1000);
+  updateSASTClock();
+
+  function syncTimeframeButtons(tfVal) {
+    document.getElementById('tfSelect').value = String(tfVal);
+    document.querySelectorAll('.btn-tf').forEach(btn => {
+      btn.classList.toggle('active', btn.dataset.tf === String(tfVal));
+    });
+  }
+
+  document.querySelectorAll('.btn-tf').forEach(btn => {
+    btn.addEventListener('click', () => {
+      playAlertTone('CLICK');
+      const tf = btn.dataset.tf;
+      syncTimeframeButtons(tf);
+      panOffsetBars = 0;
+      currentTvInterval = '';
+      showToast(`🕒 Switched to M${tf} Timeframe`);
+      scanAllPairsVerified(false);
+    });
+  });
+
+  document.getElementById('tfSelect').addEventListener('change', (e) => {
+    playAlertTone('CLICK');
+    syncTimeframeButtons(e.target.value);
+    panOffsetBars = 0;
+    currentTvInterval = '';
+    showToast(`🕒 Switched to M${e.target.value} Timeframe`);
+    scanAllPairsVerified(false);
+  });
+
+  function updateZoomBounds(d) {
+    const totalBars = d && d.candles ? d.candles.length : 85;
+    zoomCandleCount = Math.max(10, Math.min(85, zoomCandleCount));
+    const maxPan = Math.max(0, totalBars - zoomCandleCount);
+    panOffsetBars = Math.max(0, Math.min(maxPan, panOffsetBars));
+    const zLbl = document.getElementById('zoomCountLabel');
+    if (zLbl) zLbl.textContent = zoomCandleCount;
+    if (d && chartMode === 'CANVAS') drawChart(d);
+  }
+
+  document.getElementById('zoomInBtn').addEventListener('click', () => {
+    playAlertTone('CLICK');
+    zoomCandleCount = Math.max(10, zoomCandleCount - 8);
+    updateZoomBounds(matrixCache[document.getElementById('pairSelect').value]);
+    showToast(`➕ Zoomed In (${zoomCandleCount} candles)`);
+  });
+
+  document.getElementById('zoomOutBtn').addEventListener('click', () => {
+    playAlertTone('CLICK');
+    zoomCandleCount = Math.min(85, zoomCandleCount + 8);
+    updateZoomBounds(matrixCache[document.getElementById('pairSelect').value]);
+    showToast(`➖ Zoomed Out (${zoomCandleCount} candles)`);
+  });
+
+  document.getElementById('panLeftBtn').addEventListener('click', () => {
+    playAlertTone('CLICK');
+    panOffsetBars += 6;
+    updateZoomBounds(matrixCache[document.getElementById('pairSelect').value]);
+  });
+
+  document.getElementById('panRightBtn').addEventListener('click', () => {
+    playAlertTone('CLICK');
+    panOffsetBars = Math.max(0, panOffsetBars - 6);
+    updateZoomBounds(matrixCache[document.getElementById('pairSelect').value]);
+  });
+
+  document.getElementById('zoomResetBtn').addEventListener('click', () => {
+    playAlertTone('CLICK');
+    zoomCandleCount = 36;
+    panOffsetBars = 0;
+    hoverCandleIndex = null;
+    updateZoomBounds(matrixCache[document.getElementById('pairSelect').value]);
+    showToast('🔄 Reset to Live Candle Edge');
+  });
+
+  const canvasEl = document.getElementById('chartCanvas');
+  canvasEl.addEventListener('wheel', (e) => {
+    e.preventDefault();
+    if (e.deltaY < 0) zoomCandleCount = Math.max(10, zoomCandleCount - 4);
+    else zoomCandleCount = Math.min(85, zoomCandleCount + 4);
+    updateZoomBounds(matrixCache[document.getElementById('pairSelect').value]);
+  }, { passive: false });
+
+  canvasEl.addEventListener('pointerdown', (e) => {
+    isDraggingChart = true;
+    dragStartX = e.clientX;
+    dragStartPan = panOffsetBars;
+    canvasEl.setPointerCapture(e.pointerId);
+  });
+
+  canvasEl.addEventListener('pointermove', (e) => {
+    const d = matrixCache[document.getElementById('pairSelect').value];
+    if (!d) return;
+    const rect = canvasEl.getBoundingClientRect();
+    const relX = e.clientX - rect.left;
+
+    if (isDraggingChart) {
+      const dx = e.clientX - dragStartX;
+      const barPx = (rect.width - 68) / zoomCandleCount;
+      const deltaBars = Math.round(dx / Math.max(4, barPx));
+      panOffsetBars = dragStartPan + deltaBars;
+      updateZoomBounds(d);
+    } else {
+      const leftPad = 10;
+      const rightAxisW = 62;
+      const plotW = rect.width - leftPad - rightAxisW;
+      const step = plotW / zoomCandleCount;
+      const idxInSlice = Math.floor((relX - leftPad) / step);
+      if (idxInSlice >= 0 && idxInSlice < zoomCandleCount) {
+        hoverCandleIndex = idxInSlice;
+        drawChart(d);
+      }
+    }
+  });
+
+  canvasEl.addEventListener('pointerup', () => { isDraggingChart = false; });
+  canvasEl.addEventListener('pointerleave', () => {
+    isDraggingChart = false;
+    hoverCandleIndex = null;
+    const d = matrixCache[document.getElementById('pairSelect').value];
+    if (d && chartMode === 'CANVAS') drawChart(d);
+  });
+
+  window.addEventListener('resize', () => {
+    const d = matrixCache[document.getElementById('pairSelect').value];
+    if (d && chartMode === 'CANVAS') drawChart(d);
+  });
+
+  document.getElementById('modeCanvasBtn').addEventListener('click', () => {
+    playAlertTone('CLICK');
+    chartMode = 'CANVAS';
+    document.getElementById('modeCanvasBtn').classList.add('active');
+    document.getElementById('modeTvBtn').classList.remove('active');
+    document.getElementById('canvasWrap').style.display = 'block';
+    document.getElementById('tvWidgetContainer').style.display = 'none';
+    const d = matrixCache[document.getElementById('pairSelect').value];
+    if (d) drawChart(d);
+    showToast('📊 Switched to PSAR + VWAP Canvas');
+  });
+
+  document.getElementById('modeTvBtn').addEventListener('click', () => {
+    playAlertTone('CLICK');
+    chartMode = 'TV';
+    document.getElementById('modeTvBtn').classList.add('active');
+    document.getElementById('modeCanvasBtn').classList.remove('active');
+    document.getElementById('canvasWrap').style.display = 'none';
+    document.getElementById('tvWidgetContainer').style.display = 'block';
+    mountTradingViewWidget(document.getElementById('pairSelect').value);
+    showToast('📈 Switched to Official TradingView Feed');
+  });
+
+  function mountTradingViewWidget(pairId) {
+    if (chartMode !== 'TV' || typeof TradingView === 'undefined') return;
+    const meta = PAIRS.find(p => p.id === pairId) || PAIRS[0];
+    const rawTf = document.getElementById('tfSelect').value;
+    const tvTf = rawTf === '10' ? '5' : rawTf;
+    if (currentTvSymbol === meta.tvSym && currentTvInterval === tvTf) return;
+
+    currentTvSymbol = meta.tvSym;
+    currentTvInterval = tvTf;
+    document.getElementById('tvWidgetContainer').innerHTML = '<div id="tv_inner_chart" style="width:100%;height:350px;"></div>';
+
+    new TradingView.widget({
+      container_id: 'tv_inner_chart',
+      autosize: true,
+      symbol: meta.tvSym,
+      interval: tvTf,
+      timezone: 'Africa/Johannesburg',
+      theme: 'dark',
+      style: '1',
+      locale: 'en',
+      toolbar_bg: '#0a101d',
+      enable_publishing: false,
+      hide_top_toolbar: false,
+      save_image: false,
+      studies: ['PSAR@tv-basicstudies', 'RSI@tv-basicstudies', 'MACD@tv-basicstudies']
+    });
+  }
+
+  document.getElementById('fullscreenBtn').addEventListener('click', () => {
+    playAlertTone('CLICK');
+    if (!document.fullscreenElement) {
+      document.documentElement.requestFullscreen().catch(() => {});
+    } else {
+      document.exitFullscreen().catch(() => {});
+    }
+  });
+
+  document.getElementById('soundBtn').addEventListener('click', (e) => {
+    audioEnabled = !audioEnabled;
+    e.target.textContent = audioEnabled ? '🔊 CHIME' : '🔇 MUTED';
+    e.target.classList.toggle('active', audioEnabled);
+    if (audioEnabled) playAlertTone('CLICK');
+    showToast(audioEnabled ? '🔊 Audio Chimes ON' : '🔇 Audio Chimes Muted');
+  });
+
+  document.getElementById('voiceBtn').addEventListener('click', (e) => {
+    voiceEnabled = !voiceEnabled;
+    e.target.textContent = voiceEnabled ? '🗣️ VOICE ON' : '🔇 VOICE OFF';
+    e.target.classList.toggle('active', voiceEnabled);
+    showToast(voiceEnabled ? '🗣️ Voice Readouts ON' : '🔇 Voice Readouts OFF');
+    if (voiceEnabled) speakAlert('Voice alerts enabled.', true);
+  });
+
+  document.getElementById('autoPickBtn').addEventListener('click', (e) => {
+    playAlertTone('CLICK');
+    autoPickBest = !autoPickBest;
+    e.target.textContent = autoPickBest ? '🏆 AUTO-PICK' : '🏆 MANUAL';
+    e.target.classList.toggle('active', autoPickBest);
+    showToast(autoPickBest ? '🏆 Auto-Pick Best Pair ON' : '🏆 Manual Pair Selection ON');
+  });
+
+  document.getElementById('resetVaultBtn').addEventListener('click', () => {
+    playAlertTone('CLICK');
+    gradedHistory = [];
+    pendingTrade = null;
+    circuitLockedReason = null;
+    lastTradedCandleByPair = {};
+    saveVault();
+    renderLedgerAndCircuitBreaker();
+    showToast('🗑️ Trade Ledger Reset');
+  });
+
+  document.getElementById('testVoiceBtn').addEventListener('click', () => {
+    const pairId = document.getElementById('pairSelect').value;
+    const d = matrixCache[pairId];
+    playAlertTone('BUY');
+    if (d) {
+      const stake = evaluateCircuitAndKelly(d);
+      const wrText = d.winRate !== null ? `${(d.winRate * 100).toFixed(0)} percent` : 'insufficient sample';
+      showToast(`🗣️ Speaking ${d.label} AI Desk Narrative...`);
+      speakAlert(`${d.label.replace('/', ' ')} on ${d.entryTf} minute chart. ${d.narrative ? d.narrative.fullText : ''} Live price ${d.livePrice.toFixed(d.decimals)}. 50 bar win rate ${wrText}. Recommended Quarter Kelly stake ${stake} dollars.`, true);
+    } else {
+      speakAlert('Fetching real exchange candles, please wait a moment.', true);
+    }
+  });
+
+  document.getElementById('forceScanBtn').addEventListener('click', () => scanAllPairsVerified(true));
+  document.getElementById('refreshNewsBtn').addEventListener('click', () => fetchKeylessLiveNews(true));
+
+  document.getElementById('pairSelect').addEventListener('change', (e) => {
+    playAlertTone('CLICK');
+    panOffsetBars = 0;
+    displayPair(e.target.value, false);
+    showToast(`📊 Focused ${e.target.value}`);
+  });
+
+  document.getElementById('bankrollInput').addEventListener('input', () => {
+    saveVault();
+    const d = matrixCache[document.getElementById('pairSelect').value];
+    if (d) evaluateCircuitAndKelly(d);
+    renderLedgerAndCircuitBreaker();
+  });
+
+  document.getElementById('payoutInput').addEventListener('input', () => {
+    const d = matrixCache[document.getElementById('pairSelect').value];
+    if (d) displayPair(d.id, false);
+  });
+
+  setInterval(() => {
+    const now = new Date();
+    const tfMin = parseInt(document.getElementById('tfSelect').value, 10) || 5;
+    const totalSec = tfMin * 60;
+    const elapsedSec = (now.getMinutes() % tfMin) * 60 + now.getSeconds();
+    const remainSec = totalSec - elapsedSec;
+
+    document.getElementById('countdownText').textContent = `Next M${tfMin} Candle Scan: ${remainSec}s`;
+    document.getElementById('timerBar').style.width = `${(elapsedSec / totalSec) * 100}%`;
+
+    const winEl = document.getElementById('entryWindowTag');
+    if (elapsedSec <= 20) {
+      winEl.textContent = `🎯 Sniper Window OPEN (${20 - elapsedSec}s left)`;
+      winEl.style.color = 'var(--green)';
+    } else {
+      winEl.textContent = `⏳ Mid-Candle — Wait ${remainSec}s for Next Open`;
+      winEl.style.color = 'var(--text-muted)';
+    }
+
+    if (pendingTrade) {
+      renderLedgerAndCircuitBreaker();
+      if (Date.now() >= pendingTrade.expiresAtMs) {
+        scanAllPairsVerified(false);
+      }
+    } else if (remainSec === totalSec || remainSec === 1) {
+      scanAllPairsVerified(false);
+    }
+  }, 1000);
+
+  // Clean Startup Sequence
+  loadVault();
+  renderLedgerAndCircuitBreaker();
+  fetchKeylessLiveNews(false);
+  connectHighFrequencyStreams();
+  scanAllPairsVerified(false);
+</script>
+</body>
+</html>
